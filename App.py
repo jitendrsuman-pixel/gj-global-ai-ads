@@ -326,6 +326,6 @@ with tab1:
                         genai.configure(api_key=st.session_state.saved_gemini_key)
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
-                        # Perfect Solution: Strictly separated single block string array to bypass f-string parsing restrictions
-                        prompt_segments = [
-                            "You are a multi-million dollar elite Meta
+                        smart_campaign_prompt = f"""
+You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure.
+Your mission is t
