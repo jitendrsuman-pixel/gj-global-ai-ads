@@ -28,13 +28,10 @@ Naturally mention the verified link {} inside conversion call-to-actions.
 st.set_page_config(page_title="GJ GLOBAL AI ADS", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
-# --- 🚩 PREMIUM HEADER DESIGN (Zero-Crash Python 3.14 Version) ---
-st.markdown("""
-    <div style="background: linear-gradient(45deg, #ff4500, #ff761a); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);">
-        <h1 style="color: white; margin: 0; font-size: 32px; font-family: 'Arial'; letter-spacing: 1px;">🚩 जय श्री RAM 🚩</h1>
-        <p style="color: #ffe6cc; margin: 5px 0 0 0; font-size: 16px; font-weight: bold; letter-spacing: 2px;">JAI SHREE RAM | GJ GLOBAL AI ADS CORE INTERFACE</p>
-    </div>
-""", unsafe_allowed_html=True)
+# --- 🚩 PREMIUM HEADER DESIGN (Zero-HTML Safe Version) ---
+st.title("🚩 जय श्री RAM 🚩")
+st.subheader("JAI SHREE RAM | GJ GLOBAL AI ADS CORE INTERFACE")
+st.divider()
 
 # --- 🔒 SECURITY UTILITIES ---
 def hash_password(password):
