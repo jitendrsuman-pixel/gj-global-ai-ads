@@ -13,7 +13,7 @@ st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_ico
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 USD_TO_INR = 85
 
-# --- 🚩 JAI SHREE RAM SPLASH SCREEN (Python 3.14 Thread Fix) ---
+# --- 🚩 JAI SHREE RAM SPLASH SCREEN (Python 3.14 Thread & Loop Fix) ---
 if 'splash_done' not in st.session_state:
     placeholder = st.empty()
     placeholder.markdown("""
@@ -95,22 +95,24 @@ if "global_spied_data" not in st.session_state:
         }
     }
 
-# Session Management
+# Session Management & Cross-Tab Variable Persistence Fix
 if "users_db" not in st.session_state: st.session_state.users_db = {}
 if "current_user" not in st.session_state: st.session_state.current_user = None
 if "otp_sent" not in st.session_state: st.session_state.otp_sent = None
 if "global_performance" not in st.session_state: st.session_state.global_performance = []
 if "marketing_videos" not in st.session_state: st.session_state.marketing_videos = []
 if "app_self_lock" not in st.session_state: st.session_state.app_self_lock = False
+if "saved_gemini_key" not in st.session_state: st.session_state.saved_gemini_key = ""
 
-# --- 🌐 MULTILINGUAL DICTIONARY & SELECTOR ---
+# --- 🌐 MULTILINGUAL DICTIONARY ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरीें सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
+    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
     "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
 }
+
 selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
 lang = languages[selected_lang]
 
@@ -124,7 +126,7 @@ if st.session_state.current_user is None:
     if auth_mode == "Sign Up":
         name = sanitize_input(st.text_input("Full Name:"))
         email = sanitize_input(st.text_input("Email ID:")).lower()
-        phone = sanitize_input(st.text_input("Phone Number:"))
+        phone = sanitize_input(st.text_input("Phone Number (with Country Code):"))
         custom_password = st.text_input("Create Password:", type="password")
         plan_choice = st.selectbox("Select Subscription Tier Plan", list(st.session_state.fixed_prices.keys()))
         
@@ -145,7 +147,7 @@ if st.session_state.current_user is None:
                     days = 30 if "Monthly" in plan_choice else (180 if "6-Month" in plan_choice else 365)
                     st.session_state.users_db[email] = {
                         "name": name, "password": hash_password(custom_password), "plan": plan_choice, 
-                        "signup_date": datetime.date.today(), "days": days, "autopilot_active": True
+                        "phone": phone, "signup_date": datetime.date.today(), "days": days, "autopilot_active": True
                     }
                     st.session_state.current_user = email
                     st.success("Account Created Successfully!")
@@ -184,7 +186,6 @@ expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days
 if datetime.date.today() > expiry_date:
     st.error("❌ SUBSCRIPTION EXPIRED: Your account billing cycle has ended!")
     
-    # Fully Dynamic Redirects based on Admin Panel configs
     active_gateway = st.session_state.razorpay_link if user_country == "Inside India (INR ₹)" else st.session_state.stripe_link
     st.markdown(f'<a href="{active_gateway}" target="_blank"><button style="background: linear-gradient(to right, #ff3333, #b30000); color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold;">💳 Clear Dues via Secured Gateway Node Now</button></a>', unsafe_allowed_html=True)
     if st.sidebar.button("Log Out Node 🔒"):
@@ -198,7 +199,6 @@ admin_email = st.sidebar.text_input("Verify Admin Route:", placeholder="owner@gm
 if admin_email.lower() == OWNER_EMAIL.lower():
     st.sidebar.success("Root Sovereign Control Dash Active!")
     
-    # 💳 GATEWAYS EDIT LINKS ROUTER BLOCK
     with st.sidebar.expander("💳 Edit Live Payment Gateways Links"):
         st.session_state.razorpay_link = st.sidebar.text_input("India (Razorpay URL):", value=st.session_state.razorpay_link)
         st.session_state.stripe_link = st.sidebar.text_input("Global (Stripe URL):", value=st.session_state.stripe_link)
@@ -227,8 +227,28 @@ if admin_email.lower() == OWNER_EMAIL.lower():
             st.session_state.marketing_videos.append(add_v_url)
             st.sidebar.success("Review updated onto interface data layers!")
 
+# --- USER PROFILE & NATIVE CONTACT INTERACTION GATE ---
 st.sidebar.markdown(f"👤 Account: **{user_data['name']}**")
 st.sidebar.info(f"Active Allocation: **{user_data['plan']}**")
+
+# Dynamic HTML integration to request phone access layout intents
+user_phone = user_data.get("phone", "")
+if user_phone:
+    st.sidebar.markdown(f"""
+        <div style='background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; border-left: 3px solid #00ffcc;'>
+            <span style='font-size: 12px; color: #aaa;'>📱 Device Router Phone Reference:</span><br>
+            <strong style='color: #00ffcc;'>{user_phone}</strong>
+            <div style='margin-top: 8px;'>
+                <a href='tel:{user_phone}' style='text-decoration: none; margin-right: 10px;'>
+                    <button style='background: #222; color: #fff; border: 1px solid #444; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;'>Call Native</button>
+                </a>
+                <a href='https://wa.me/{user_phone}' target='_blank' style='text-decoration: none;'>
+                    <button style='background: #25D366; color: #fff; border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;'>WhatsApp Gate</button>
+                </a>
+            </div>
+        </div>
+    """, unsafe_allowed_html=True)
+
 if st.sidebar.button("Purge Session & Logout 🔒"):
     st.session_state.current_user = None
     st.rerun()
@@ -272,6 +292,9 @@ with tab1:
         gemini_key = st.text_input("Sovereign Gemini Studio Secret Private Key Input:", type="password")
         budget = st.number_input("Daily Ad Spend Allocation Vector ($/₹):", min_value=100, value=500)
         
+        if gemini_key:
+            st.session_state.saved_gemini_key = sanitize_input(gemini_key)
+        
         if st.button(lang['run']):
             current_time = time.time()
             if "last_click" in st.session_state and (current_time - st.session_state.last_click) < 5:
@@ -282,7 +305,7 @@ with tab1:
                 with st.spinner("🔒 Activating Hyper-Intelligent Meta Media Buying System Engine..."):
                     try:
                         os.environ["GOOGLE_API_VERSION"] = "v1"
-                        genai.configure(api_key=sanitize_input(gemini_key))
+                        genai.configure(api_key=st.session_state.saved_gemini_key)
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
                         smart_campaign_prompt = f"""
@@ -297,15 +320,4 @@ with tab1:
 
                         ### 🎯 1. METICULOUS TARGET AUDIENCE DEMOGRAPHICS & PSYCHOGRAPHICS
                         - **Core Customer Persona:** Define who exactly has the wallet ready to buy this product immediately.
-                        - **Exact Interest Targeting Stacks:** Provide exact high-intent Meta interests (e.g., 'Engaged Shoppers', specific competing brand names, or matching lifestyles).
-                        - **Behavioral Filters & Demographics:** Map specific household income proxies, device usages, or buying habits that prevent budget wastage on junk clicks.
-
-                        ### 📈 2. THREE-STAGE SYSTEM CAMPAIGN FUNNEL
-                        - **TOFU (Top of Funnel - Cold Audience):** The ultimate interest-stacking setup to hook brand new shoppers who don't know the brand.
-                        - **MOFU (Middle of Funnel - Warm Audience):** Precise custom audiencing setups (Video viewers, Page engagers) to solve friction or doubts.
-                        - **BOFU (Bottom of Funnel - Hot Conversion Retargeting):** Zero-hesitation audience triggers to push immediate checkouts using dynamic urgency.
-
-                        ### ✍️ 3. HIGH-CONVERTING AD COPY VAULT (WRITTEN NATIVELY IN EMOTION-DRIVEN HINGLISH WITH HIGHLY RELEVANT EMOJIS)
-                        Create three radically different structural copy frameworks:
-                        - **Hook Copy Alpha (Problem-Agitate-Solution Angle):** Highlight a painful everyday struggle, scratch the wound, and present this product as the only divine savior.
-                        - **Hook Copy Beta (Curiosity/Viral Trend Angle):** Make it look like an insanely trending internet hack or lifestyle fl
+                        - **Exact Interest Targeting Stacks:** Provide exact high-intent Meta interests (e
