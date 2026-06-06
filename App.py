@@ -326,5 +326,6 @@ with tab1:
                         genai.configure(api_key=st.session_state.saved_gemini_key)
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
-                        # Fix: Concatenating line segments to avoid multi-line string syntax crash
-                        p1 = "You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targete
+                        # Perfect Solution: Strictly separated single block string array to bypass f-string parsing restrictions
+                        prompt_segments = [
+                            "You are a multi-million dollar elite Meta
