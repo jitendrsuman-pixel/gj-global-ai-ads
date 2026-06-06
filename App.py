@@ -387,7 +387,9 @@ with tab3:
         st.markdown("### **Starter**")
         st.markdown(f"## **$49** <small style='font-size:14px; color:gray;'>USD /month</small>", unsafe_allowed_html=True)
         st.write(f"Approx ₹{round(49 * usd_to_inr_rate)} / month")
-        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Choose Starter</button></a>', unsafe_allowed_html=True)
+        # FIXED: Removed multi-line breakdown inside single-line f-string to completely bypass syntax errors
+        btn_html_starter = f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Choose Starter</button></a>'
+        st.markdown(btn_html_starter, unsafe_allowed_html=True)
         st.markdown("""
         **What's included:**
         * ✓ 5 AI store creations (limited)
@@ -401,5 +403,4 @@ with tab3:
         st.markdown("### **Growth**")
         st.markdown(f"## **$69** <small style='font-size:14px; color:gray;'>USD /month</small>", unsafe_allowed_html=True)
         st.write(f"Approx ₹{round(69 * usd_to_inr_rate)} / month")
-        # FIXED: Resolved layout split string crash mapping context safely
-        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:
+        # FIXED: Clean single line f-string element mapping pr
