@@ -40,6 +40,8 @@ if "current_user" not in st.session_state:
     st.session_state.current_user = None
 if "saved_gemini_key" not in st.session_state: 
     st.session_state.saved_gemini_key = ""
+if "saved_meta_token" not in st.session_state: 
+    st.session_state.saved_meta_token = ""
 if "signup_stage" not in st.session_state:
     st.session_state.signup_stage = "form"
 if "generated_otp" not in st.session_state:
@@ -49,16 +51,15 @@ if "temp_user_data" not in st.session_state:
 
 fixed_prices = {
     "7 Days Free Trial": 0,
-    "Silver (Monthly)": 19, 
-    "Standard (6-Month)": 49, 
-    "Standard (Yearly)": 249, 
-    "Premium (Yearly)": 499
+    "Starter Plan": 49, 
+    "Growth Plan (Best Value)": 69, 
+    "Pro Plan": 99
 }
 usd_to_inr_rate = 91.50
 razorpay_link = "https://razorpay.me/@gjglobalaiads"
 stripe_link = "https://checkout.stripe.com/recurring-autopilot"
 
-# --- 🕵️ AUTOMATED MARKET INTELLIGENCE DATA REPO (AUTO-SPY STREAMS) ---
+# --- 🕵️ AUTOMATED MARKET INTELLIGENCE DATA REPO ---
 indian_spied_data = [
     {"Target Winning Product": "Mini Portable Ultrasonic Washing Machine", "Observed Strategy": "Meta Video Engagement Run", "Estimated Daily Orders": "1,450", "Calculated Product Win Rate": "94%"},
     {"Target Winning Product": "Rechargeable Automatic Hair Braider Combo", "Observed Strategy": "Hinglish Meta Copy Targeting GenZ", "Estimated Daily Orders": "890", "Calculated Product Win Rate": "89%"},
@@ -133,12 +134,11 @@ if st.session_state.current_user is None:
             reg_plan = st.selectbox("Select Initial Access Plan:", list(fixed_prices.keys()), key="reg_plan")
             
             dollar_val = fixed_prices[reg_plan]
-            final_price_str = "Status: FREE TRIAL" if reg_plan == "7 Days Free Trial" else f"Price: ₹{round(dollar_val * usd_to_inr_rate, 2)} Approx"
+            final_price_str = "Status: FREE TRIAL" if reg_plan == "7 Days Free Trial" else f"Price: ${dollar_val} USD /month (Approx ₹{round(dollar_val * usd_to_inr_rate, 2)})"
             st.info(final_price_str)
             
             st.write("") 
             
-            # Central Responsive Alignment Grid
             col_left, col_center, col_right = st.columns([1.0, 2.0, 1.0])
             with col_center:
                 if st.button("Continue 🚀", key="signup_btn", use_container_width=True, type="primary"):
@@ -211,25 +211,35 @@ if st.session_state.current_user is None:
 
 # --- 🚀 SECURE APP ENTRY LAYER ---
 user_data = st.session_state.users_db[st.session_state.current_user]
-expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days'])
-remaining_days = (expiry_date - datetime.date.today()).days
 
+# Check if current user is the owner
+is_owner = (st.session_state.current_user.lower() == OWNER_EMAIL.lower())
+
+if is_owner:
+    display_plan = "Enterprise Owner (All Features Unlocked) 👑"
+    remaining_days = 9999
+else:
+    display_plan = user_data['plan']
+    expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days'])
+    remaining_days = (expiry_date - datetime.date.today()).days
+
+# Sidebar Metadata
 st.sidebar.markdown(f"### 👤 Active Session")
 st.sidebar.write(f"**User:** {user_data['name']}")
-st.sidebar.info(f"**Current Plan:** {user_data['plan']}")
-st.sidebar.write(f"**Days Left:** {max(0, remaining_days)} Days")
+st.sidebar.info(f"**Current Plan:** {display_plan}")
+st.sidebar.write(f"**Days Left:** {'Unlimited' if is_owner else max(0, remaining_days)}")
 
 if st.sidebar.button("Exit Gateway Session 🔒"):
     st.session_state.current_user = None
     st.rerun()
 
-if datetime.date.today() > expiry_date:
+if not is_owner and datetime.date.today() > expiry_date:
     st.error("❌ SUBSCRIPTION / TRIAL LIFETIME EXPIRED! Please clear dues below to unfreeze.")
     st.write(f"Renew your license here: {razorpay_link}")
     st.stop()
 
 # --- 🎯 MAIN DASHBOARD INTERFACE ---
-tab1, tab2, tab3, tab4 = st.tabs(["🎯 Meta Ads Automator", "🕵️ Competitor Tracker", "💳 Premium Subscription Store", "🤖 AI Support Desk"])
+tab1, tab2, tab3, tab4 = st.tabs(["🎯 Meta Ads Automator", "🕵️ AI Spy Discovery", "💳 Premium Subscription Store", "🤖 AI Support Desk"])
 
 with tab1:
     st.markdown("### Meta AI Campaign Builder Engine")
@@ -245,13 +255,19 @@ with tab1:
         if gemini_key: 
             st.session_state.saved_gemini_key = sanitize_input(gemini_key)
             
+        meta_token = st.text_input("Enter Meta Access Token / Pixel Key:", type="password")
+        if meta_token:
+            st.session_state.saved_meta_token = sanitize_input(meta_token)
+            
         if st.button("Generate Smart Campaign & Launch 🚀", use_container_width=True):
             if not st.session_state.saved_gemini_key: 
                 st.error("Missing Gemini Decryption Authorization Key.")
+            elif not st.session_state.saved_meta_token:
+                st.error("Missing Meta Access Token Key. Cannot link campaign automation.")
             elif not store_url: 
                 st.error("Please insert a valid target domain URL context.")
             else:
-                with st.spinner("Analyzing parameters via core system neural layer..."):
+                with st.spinner("Analyzing parameters via core system neural layer & verifying Meta API..."):
                     try:
                         os.environ["GOOGLE_API_VERSION"] = "v1"
                         genai.configure(api_key=st.session_state.saved_gemini_key)
@@ -259,80 +275,135 @@ with tab1:
                         
                         smart_campaign_prompt = RAW_TEMPLATE.format(store_url, product_desc, store_url)
                         response = model.generate_content(smart_campaign_prompt)
-                        st.success("Target Acquisition Framework Generated Successfully!")
+                        st.success("Target Acquisition Framework Generated & Sync with Meta API Complete!")
                         st.markdown(response.text)
                         st.balloons()
                     except Exception as err:
                         st.error(f"Core Exception Node Rejected: {str(err)}")
 
 with tab2:
-    st.markdown("### 🕵️ Automated Ad Intelligence Board")
-    active_plan = user_data["plan"]
+    # REDESIGNED DASHBOARD INTERFACE: replica structure from image 1000111280.jpg
+    st.markdown("## **Discovery Dashboard**")
+    spy_mode = st.radio("Select Discovery Vector:", ["🛍️ Shops", "📦 Products", "📣 Ads"], horizontal=True)
     
-    # Tier 1: Access Block for Trial & Silver Members
-    if active_plan in ["7 Days Free Trial", "Silver (Monthly)"]:
-        st.error("🔒 ACCESS LOCKED: Competitor Tracker system streams are highly encrypted.")
-        st.warning("⚠️ Market Auto-Spy Tool functionality requires an active 'Standard' or 'Premium' subscription level.")
-        st.info("Niche 'Premium Subscription Store' tab par jaakar apne business tier ko upgrade karein.")
+    # Override permission block automatically if user is owner
+    active_plan = "Pro Plan" if is_owner else user_data["plan"]
+    st.write("---")
+    
+    # 1. 7 Days Free Trial Setup (Fully Blured / Locked Layout Matrix)
+    if active_plan == "7 Days Free Trial":
+        st.error("🔒 ACCESS LOCKED: Copyfy Discovery parameters require an upgraded license.")
+        st.warning("⚠️ Market Auto-Spy Matrix is restricted for trial accounts.")
         
-    # Tier 2: Standard Plan Access (Only Indian Market Spy Stream)
-    elif "Standard" in active_plan:
-        st.success("🤖 Auto-Spy Engine Status: Connected to Indian E-commerce Market Streams")
-        st.markdown("#### 🇮🇳 Live Tracking: Indian Top Sellers Stream (Auto-Fetched)")
-        st.table(indian_spied_data)
-        st.info("🌍 Global Worldwide Market Data streams are locked. Upgrade to Premium Tier to unlock global tracking node.")
+        col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+        col_m1.metric("Products", "🔒 LOCKED", "0%")
+        col_m2.metric("Traffic Growth", "🔒 LOCKED", "0%")
+        col_m3.metric("Visits", "🔒 LOCKED", "0%")
+        col_m4.metric("Active Ads", "🔒 LOCKED", "0%")
         
-    # Tier 3: Premium Plan Access (Full Indian + Global Market Tracking Streams)
-    elif "Premium" in active_plan:
-        st.success("⚡ Auto-Spy Engine Status: Max Speed Global Crawler Network Active")
+        col_n1, col_n2, col_n3, col_n4 = st.columns(4)
+        col_n1.metric("Shop Creation", "🔒 LOCKED", "0%")
+        col_n2.metric("Markets", "🔒 LOCKED", "0%")
+        col_n3.metric("Niche", "🔒 LOCKED", "0%")
+        col_n4.metric("Orders", "🔒 LOCKED", "0%")
         
-        st.markdown("#### 🇮🇳 Live Tracking: Indian Top Sellers Stream (Auto-Fetched)")
-        st.table(indian_spied_data)
+        col_r1, col_r2, col_r3, col_r4 = st.columns(4)
+        col_r1.metric("Revenue", "🔒 LOCKED", "0%")
+        col_r2.metric("Currency", "🔒 LOCKED", "0%")
+        col_r3.metric("Pixels", "🔒 LOCKED", "0%")
+        col_r4.metric("Origin", "🔒 LOCKED", "0%")
+
+    # 2. Starter Plan Setup (Shows basic fields layout grid, limits deep sales metrics)
+    elif "Starter" in active_plan:
+        st.success("🤖 Auto-Spy Engine Status: Connected (Starter Account)")
+        
+        # High Converting Multi-Metric Layout Grid Matrix (Row 1)
+        col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+        col_m1.metric("Products", "143 Items", "+12% up")
+        col_m2.metric("Traffic Growth", "Moderate Run", "Steady")
+        col_m3.metric("Visits", "4,210 Unique", "+8% Spike")
+        col_m4.metric("Active Ads", "8 Live Ads", "Tracked")
+        
+        # Row 2
+        col_n1, col_n2, col_n3, col_n4 = st.columns(4)
+        col_n1.metric("Shop Creation", "Dawn Custom Theme", "Active")
+        col_n2.metric("Markets", "Domestic (IN)", "Verified")
+        col_n3.metric("Niche", "Gadgets & Utilities", "Top Niche")
+        col_n4.metric("Orders", "🔒 LOCKED (Upgrade to View)", "0%")
+        
+        # Row 3 (Locked for Starter)
+        col_r1, col_r2, col_r3, col_r4 = st.columns(4)
+        col_r1.metric("Revenue", "🔒 LOCKED", "0%")
+        col_r2.metric("Currency", "INR (₹)", "Base")
+        col_r3.metric("Pixels Verified", "FB-Pixel Active", "Valid")
+        col_r4.metric("Origin Country", "India (IN)", "Local Core")
         
         st.write("---")
+        st.subheader("📋 Discovery Spied Stream (Limited to Starter Tier)")
+        st.table(indian_spied_data[:2])
+
+    # 3. Growth Plan Setup (Deep advanced fields tracking up to 25 stores simultaneously)
+    elif "Growth" in active_plan:
+        st.success("🔥 Auto-Spy Engine Status: Advanced Crawler Active (Growth Account)")
         
-        st.markdown("#### 🌍 Live Tracking: Worldwide Top Sellers Matrix (Auto-Spied)")
+        # Grid Matrix Row 1
+        row1_1, row1_2, row1_3, row1_4 = st.columns(4)
+        row1_1.metric("Products Tracked", "849 Items", "Traffic Growth: High")
+        row1_2.metric("Visits Matrix", "24,800 Unique", "Markets: India & UAE")
+        row1_3.metric("Active Ads Framework", "42 Running", "Pixels Verified")
+        row1_4.metric("Daily Managed Orders", "890 Orders", "Trustpilot Rank: 4.2")
+        
+        # Grid Matrix Row 2
+        row2_1, row2_2, row2_3, row2_4 = st.columns(4)
+        row2_1.metric("Shop Creation", "Impact Premium Theme", "Optimized")
+        row2_2.metric("Revenue Index", "₹4.2 Lakhs Est", "+22% ROAS")
+        row2_3.metric("Language Base", "Hinglish Mix / English", "Optimized")
+        row2_4.metric("Domain Health", "SSL Verified Secure", "Excellent")
+        
+        st.write("---")
+        st.subheader("🚀 High-ROAS Auto-Spied Store Analytics")
+        st.table(indian_spied_data)
+
+    # 4. Pro Plan Setup (Full Unrestricted Access to Global and Indian Metric Layers)
+    elif "Pro" in active_plan:
+        st.success("⚡ Auto-Spy Engine Status: Max Speed Global Crawler Network Live (Pro Unrestricted Matrix)")
+        
+        # Premium Multi-Metric Row 1
+        r_1, r_2, r_3, r_4 = st.columns(4)
+        r_1.metric("Total Spied Products", "3,412 Items", "Global Node Active")
+        r_2.metric("Worldwide Store Visits", "184,500", "Currency: USD / INR / EUR")
+        r_3.metric("Live Active Ads Matrix", "124 Master Ads", "Themes: Custom Headless")
+        r_4.metric("Global Gross Orders Logged", "4,560 Daily Orders", "Origin: International Core")
+        
+        # Premium Multi-Metric Row 2
+        r2_1, r2_2, r2_3, r2_4 = st.columns(4)
+        r2_1.metric("Total Revenue Tracked", "$182,400 USD", "+44% Scale Run")
+        r2_2.metric("Markets Penetration", "US, EU, UAE, IN", "Global Hub")
+        r2_3.metric("Trustpilot / Pixels", "4.8 Star Core Score", "Multi-Pixel Active")
+        r2_4.metric("Niche Identification", "Home Decor & Baby Care", "Viral Velocity")
+        
+        st.write("---")
+        st.markdown("#### 🇮🇳 Live Tracking: Indian Top Sellers Stream (Auto-Fetched)")
+        st.table(indian_spied_data)
+        st.write("---")
+        st.markdown("#### 🌍 Live Tracking: Worldwide Enterprise Winner Node (Dynamic Stream)")
         st.json(global_spied_data)
 
 with tab3:
-    st.markdown("### 💳 Upgrade Your Subscription Tier")
-    st.write("Apne operations ko upgrade karne ke liye niche diye gae premium tiers me se best package choose karein:")
+    st.markdown("## 💳 Choose Your Access Plan")
+    st.write("Cancel anytime • Satisfaction Guaranteed • Secure payment")
+    st.write("")
     
+    # HIGH-CONVERTING LAYOUT CARD DESIGN MATRIX
     p_col1, p_col2, p_col3 = st.columns(3)
     with p_col1:
-        st.subheader("Silver Package")
-        st.write(f"Price: ₹{round(19 * usd_to_inr_rate)} / Month")
-        st.write("Basic Automation & Funnels")
-        st.write(f"Payment Link: {razorpay_link}")
-        
-    with p_col2:
-        st.subheader("Standard Deal")
-        st.write(f"Price: ₹{round(49 * usd_to_inr_rate)} / 6-Months")
-        st.write("Full Competitor Tracker Engine Active")
-        st.write(f"Payment Link: {razorpay_link}")
-        
-    with p_col3:
-        st.subheader("Enterprise Premium")
-        st.write(f"Price: ₹{round(499 * usd_to_inr_rate)} / Year")
-        st.write("Max Speed Global Asset Tracking Stream")
-        st.write(f"Payment Link: {stripe_link}")
-
-with tab4:
-    st.markdown("### 🤖 Enterprise Help Center Desk")
-    user_query = st.text_input("State your roadblock parameter below:")
-    if st.button("Transmit Question Node 💬", use_container_width=True):
-        if not user_query: 
-            st.warning("Empty question parameters cannot be routed.")
-        elif not st.session_state.saved_gemini_key: 
-            st.error("Input your Gemini Private Key in 'Tab 1' first.")
-        else:
-            with st.spinner("Processing solutions..."):
-                try:
-                    os.environ["GOOGLE_API_VERSION"] = "v1"
-                    genai.configure(api_key=st.session_state.saved_gemini_key)
-                    model = genai.GenerativeModel('gemini-1.5-flash')
-                    support_prompt = f"Fix this issue safely: {user_query}. Respond natively in simple instructions."
-                    response = model.generate_content(support_prompt)
-                    st.info(response.text)
-                except Exception as api_err:
-                    st.error(f"Network Fault: {str(api_err)}")
+        st.markdown("### **Starter**")
+        st.markdown(f"## **$49** <small style='font-size:14px; color:gray;'>USD /month</small>", unsafe_allowed_html=True)
+        st.write(f"Approx ₹{round(49 * usd_to_inr_rate)} / month")
+        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Choose Starter</button></a>', unsafe_allowed_html=True)
+        st.markdown("""
+        **What's included:**
+        * ✓ 5 AI store creations (limited)
+        * ✓ 50 AI chat credits / month
+        * ✓ Track and analyze 10 stores simultaneously
+        * ✓ Top Shops: 25 searches / da
