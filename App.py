@@ -119,7 +119,7 @@ languages = {
     "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
-    "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
+    "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسस للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
 }
 
 selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
@@ -292,7 +292,6 @@ with tab1:
     with col1:
         st.header("🛒 Creative Inventory Data")
         raw_url = st.text_input("E-Commerce Storefront Link URL:", placeholder="https://yourstore.com")
-        # Live link automated sanitation execution
         store_url = validate_and_fix_url(raw_url)
         
         product_desc = sanitize_input(st.text_area("Product Strategy Narrative Description:"))
@@ -322,10 +321,10 @@ with tab1:
                         
                         smart_campaign_prompt = f"""
                         You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure. 
-                        Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product setup details.
+                        Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product details.
 
                         PRODUCT IDENTIFIER DETAILS:
                         - Store Verified Fixed Link URL Context: {store_url}
-                        - Raw Product Narrative: {product_desc}
+                        - Raw Narrative: {product_desc}
 
-                        Generate the output str
+                        Generate the output structured across the following high-performing matrix nodes:
