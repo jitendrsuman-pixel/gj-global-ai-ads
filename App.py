@@ -38,6 +38,15 @@ def sanitize_input(text):
     clean = re.sub(r'<[^>]*?>', '', str(text))
     return clean.replace('"', '').replace("'", "").replace(";", "").strip()
 
+# URL Fixer Logic
+def validate_and_fix_url(url):
+    url = sanitize_input(url)
+    if not url:
+        return ""
+    if not (url.startswith("http://") or url.startswith("https://")):
+        url = "https://" + url
+    return url
+
 # Custom UI Styles Injection
 st.markdown("""
     <style>
@@ -231,7 +240,6 @@ if admin_email.lower() == OWNER_EMAIL.lower():
 st.sidebar.markdown(f"👤 Account: **{user_data['name']}**")
 st.sidebar.info(f"Active Allocation: **{user_data['plan']}**")
 
-# Dynamic HTML integration to request phone access layout intents
 user_phone = user_data.get("phone", "")
 if user_phone:
     st.sidebar.markdown(f"""
@@ -283,7 +291,10 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         st.header("🛒 Creative Inventory Data")
-        store_url = sanitize_input(st.text_input("E-Commerce Storefront Link URL:", placeholder="https://yourstore.com"))
+        raw_url = st.text_input("E-Commerce Storefront Link URL:", placeholder="https://yourstore.com")
+        # Live link automated sanitation execution
+        store_url = validate_and_fix_url(raw_url)
+        
         product_desc = sanitize_input(st.text_area("Product Strategy Narrative Description:"))
         meta_token = st.text_input("Meta Graph Access Token String Container:", type="password", value="TEST_TOKEN_12345")
         ad_account_id = st.text_input("Meta Ads Target Account ID Parameter:", value="act_123456789")
@@ -300,6 +311,7 @@ with tab1:
             if "last_click" in st.session_state and (current_time - st.session_state.last_click) < 5:
                 st.error("⚠️ Cyber Security Alert: anti-DDOS protection activated. Wait 5 seconds.")
             elif not gemini_key: st.error("❌ Key Misconfiguration Error: Missing valid Gemini decryption keys.")
+            elif not store_url: st.error("❌ Link Configuration Error: Please enter a valid campaign URL link.")
             else:
                 st.session_state.last_click = current_time
                 with st.spinner("🔒 Activating Hyper-Intelligent Meta Media Buying System Engine..."):
@@ -313,11 +325,7 @@ with tab1:
                         Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product setup details.
 
                         PRODUCT IDENTIFIER DETAILS:
-                        - Store Link URL Context: {store_url}
+                        - Store Verified Fixed Link URL Context: {store_url}
                         - Raw Product Narrative: {product_desc}
 
-                        Generate the output structured across the following high-performing matrix nodes:
-
-                        ### 🎯 1. METICULOUS TARGET AUDIENCE DEMOGRAPHICS & PSYCHOGRAPHICS
-                        - **Core Customer Persona:** Define who exactly has the wallet ready to buy this product immediately.
-                        - **Exact Interest Targeting Stacks:** Provide exact high-intent Meta interests (e
+                        Generate the output str
