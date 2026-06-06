@@ -11,7 +11,6 @@ import google.generativeai as genai
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
 
 OWNER_EMAIL = "armygamingtotal@gmail.com"
-USD_TO_INR = 85
 
 # --- 🚩 JAI SHREE RAM SPLASH SCREEN (Python 3.14 Thread & Loop Fix) ---
 if 'splash_done' not in st.session_state:
@@ -71,6 +70,10 @@ if "fixed_prices" not in st.session_state:
         "Premium (Yearly)": 499
     }
 
+# 📈 DYNAMIC DOLLAR RATE ROUTER SYSTEM (Aapke mutabik default 91 set kiya hai)
+if "usd_to_inr_rate" not in st.session_state:
+    st.session_state.usd_to_inr_rate = 91.50
+
 # Editable Payment Gateways Links State
 if "razorpay_link" not in st.session_state:
     st.session_state.razorpay_link = "https://razorpay.me/@gjglobalaiads"
@@ -116,10 +119,10 @@ if "saved_gemini_key" not in st.session_state: st.session_state.saved_gemini_key
 # --- 🌐 MULTILINGUAL DICTIONARY ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
+    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपenu जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
-    "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسस للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
+    "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
 }
 
 selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
@@ -140,7 +143,8 @@ if st.session_state.current_user is None:
         plan_choice = st.selectbox("Select Subscription Tier Plan", list(st.session_state.fixed_prices.keys()))
         
         dollar_val = st.session_state.fixed_prices[plan_choice]
-        final_price_str = f"₹{dollar_val * USD_TO_INR} (Approx INR)" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
+        # Dynamic rate multiplication mapping
+        final_price_str = f"₹{round(dollar_val * st.session_state.usd_to_inr_rate, 2)} (Approx INR)" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
         st.info(f"💳 Selected Plan Value: **{final_price_str}**")
         
         if st.button("Generate System Access OTP ✉️"):
@@ -208,6 +212,11 @@ admin_email = st.sidebar.text_input("Verify Admin Route:", placeholder="owner@gm
 if admin_email.lower() == OWNER_EMAIL.lower():
     st.sidebar.success("Root Sovereign Control Dash Active!")
     
+    # 📈 NEW ADDED FEATURE: LIVE DOLLAR CONVERSION CONFIG BOX
+    with st.sidebar.expander("📈 Live USD to INR Conversion Config"):
+        st.session_state.usd_to_inr_rate = st.sidebar.number_input("Set Current Dollar Rate:", value=st.session_state.usd_to_inr_rate, step=0.10)
+        st.sidebar.info(f"Active App Exchange Node: $1 = ₹{st.session_state.usd_to_inr_rate}")
+        
     with st.sidebar.expander("💳 Edit Live Payment Gateways Links"):
         st.session_state.razorpay_link = st.sidebar.text_input("India (Razorpay URL):", value=st.session_state.razorpay_link)
         st.session_state.stripe_link = st.sidebar.text_input("Global (Stripe URL):", value=st.session_state.stripe_link)
@@ -280,13 +289,13 @@ with tab1:
             st.markdown("""
             #### 🔑 2. Extract Permanent Meta Ads Token
             * **Step 1:** Head directly to the official **Meta for Developers** portal.
-            * **Step 2:** Register an app node container and choose 'Business Solutions'.
+            * **Step 2:** Register an app container App and choose 'Business Solutions'.
             * **Step 3:** Launch the **Graph API Explorer** tracking utility module.
             * **Step 4:** Extend permissions token for `ads_management`, `ads_read` and save permanently.
             """)
         st.markdown("---")
         st.markdown("📥 **[PDF System Download]** Click down below to get the offline documentation handbook resource file link.")
-        st.download_button(label="📥 Download Step Guide PDF Manual", data="Dummy PDF content asset data for GJ Global Setup", file_name="GJ_Global_AI_Ads_Setup_Guide.pdf")
+        st.download_button(label="📥 Download Step Guide PDF Manual", data="Dummy PDF content data for GJ Global Setup", file_name="GJ_Global_AI_Ads_Setup_Guide.pdf")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -320,11 +329,4 @@ with tab1:
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
                         smart_campaign_prompt = f"""
-                        You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure. 
-                        Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product details.
-
-                        PRODUCT IDENTIFIER DETAILS:
-                        - Store Verified Fixed Link URL Context: {store_url}
-                        - Raw Narrative: {product_desc}
-
-                        Generate the output structured across the following high-performing matrix nodes:
+                        You are a mul
