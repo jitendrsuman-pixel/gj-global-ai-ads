@@ -28,20 +28,6 @@ Naturally mention the verified link {} inside conversion call-to-actions.
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Enterprise", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
-# --- 🌐 NATIVE STYLING ---
-st.markdown("""
-    <style>
-    div.stButton > button:first-child {
-        background: linear-gradient(45deg, #ff4b4b, #ff761a); color: white; font-weight: bold;
-        border: none; padding: 10px 25px; border-radius: 8px; width: 100%;
-    }
-    .pricing-card {
-        background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 15px;
-    }
-    </style>
-""", unsafe_allowed_html=True)
-
 # --- 💾 APP STATE DATABASE INIT ---
 if "users_db" not in st.session_state: 
     st.session_state.users_db = {}
@@ -101,6 +87,13 @@ if st.session_state.current_user is None:
         reg_pass = st.text_input("Choose Secure Password:", type="password", key="reg_pass")
         reg_plan = st.selectbox("Select Initial Access Plan:", list(fixed_prices.keys()), key="reg_plan")
         
+        dollar_val = fixed_prices[reg_plan]
+        if reg_plan == "7 Days Free Trial":
+            final_price_str = "Status: FREE TRIAL"
+        else:
+            final_price_str = f"Price: ₹{round(dollar_val * usd_to_inr_rate, 2)} Approx"
+        st.info(final_price_str)
+        
         if st.button("Complete Fast Track Registration 🚀", key="signup_btn"):
             if reg_name and reg_email and reg_phone and reg_pass:
                 if reg_email in st.session_state.users_db:
@@ -153,7 +146,7 @@ if st.sidebar.button("Exit Gateway Session 🔒"):
 # Account Validity Check
 if datetime.date.today() > expiry_date:
     st.error("❌ SUBSCRIPTION / TRIAL LIFETIME EXPIRED! Please clear dues below to unfreeze.")
-    st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="background: red; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer;">💳 Upgrade/Renew via Secure Razorpay</button></a>', unsafe_allowed_html=True)
+    st.write(f"Renew your license here: {razorpay_link}")
     st.stop()
 
 # --- 🎯 MAIN DASHBOARD INTERFACE ---
@@ -206,30 +199,26 @@ with tab3:
     
     p_col1, p_col2, p_col3 = st.columns(3)
     with p_col1:
-        st.markdown(f"""<div class='pricing-card'>
-            <h4>Silver Package</h4>
-            <h2>₹{round(19 * usd_to_inr_rate)} / month</h2>
-            <p>Basic Automation & Funnels</p>
-            <a href='{razorpay_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#ff4b4b; color:white; border:none; padding:8px;'>Buy via Razorpay</button></a>
-        </div>""", unsafe_allowed_html=True)
+        st.subheader("Silver Package")
+        st.write(f"Price: ₹{round(19 * usd_to_inr_rate)} / Month")
+        st.write("Basic Automation & Funnels")
+        st.write(f"Payment Link: {razorpay_link}")
+        
     with p_col2:
-        st.markdown(f"""<div class='pricing-card' style='border: 2px solid #ff761a;'>
-            <h4>Standard Deal</h4>
-            <h2>₹{round(49 * usd_to_inr_rate)} / 6-Months</h2>
-            <p>Full Competitor Tracker Engine Active</p>
-            <a href='{razorpay_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#ff761a; color:white; border:none; padding:8px;'>Buy via Razorpay</button></a>
-        </div>""", unsafe_allowed_html=True)
+        st.subheader("Standard Deal")
+        st.write(f"Price: ₹{round(49 * usd_to_inr_rate)} / 6-Months")
+        st.write("Full Competitor Tracker Engine Active")
+        st.write(f"Payment Link: {razorpay_link}")
+        
     with p_col3:
-        st.markdown(f"""<div class='pricing-card'>
-            <h4>Enterprise Premium</h4>
-            <h2>₹{round(499 * usd_to_inr_rate)} / Yearly</h2>
-            <p>Max Speed Global Asset Tracking Stream</p>
-            <a href='{stripe_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#25d366; color:white; border:none; padding:8px;'>Buy via International Stripe</button></a>
-        </div>""", unsafe_allowed_html=True)
+        st.subheader("Enterprise Premium")
+        st.write(f"Price: ₹{round(499 * usd_to_inr_rate)} / Year")
+        st.write("Max Speed Global Asset Tracking Stream")
+        st.write(f"Payment Link: {stripe_link}")
 
 with tab4:
     st.markdown("### 🤖 Enterprise Help Center Desk")
-    user_query = st.text_input("State your setup roadblock parameter below:")
+    user_query = st.text_input("State your roadblock parameter below:")
     if st.button("Transmit Question Node 💬"):
         if not user_query: 
             st.warning("Empty question parameters cannot be routed.")
