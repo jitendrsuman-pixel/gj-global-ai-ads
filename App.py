@@ -3,13 +3,10 @@ import datetime
 import hashlib
 import re
 
-# --- ⚙️ PRODUCTION CONFIGURATION ---
-OWNER_EMAIL = "armygamingtotal@gmail.com"
-razorpay_link = "https://razorpay.me/@gjglobalaiads"
-stripe_link = "https://checkout.stripe.com/recurring-autopilot"
-
 # --- 🎨 COPYFY AI ULTRA HIGH-CONVERTING CUSTOM UI ---
-st.set_page_config(page_title="GJ GLOBAL AI ADS - Full SaaS Matrix", page_icon="🚩", layout="wide")
+# Streamlit rules require page config to be the absolute first executable command
+st.set_page_config(page_title="GJ GLOBAL AI ADS - Global SaaS Edition", page_icon="🚩", layout="wide")
+
 st.markdown("""
     <style>
     /* Premium Dark Minimalist Canvas */
@@ -53,6 +50,11 @@ st.markdown("""
     }
     </style>
     """, unsafe_allowed_html=True)
+
+# --- ⚙️ PRODUCTION CONFIGURATION ---
+OWNER_EMAIL = "armygamingtotal@gmail.com"
+razorpay_link = "https://razorpay.me/@gjglobalaiads"
+stripe_link = "https://checkout.stripe.com/recurring-autopilot"
 
 # --- 💾 APP ARCHITECTURE & DATABASE STATE ---
 if "users_db" not in st.session_state: 
@@ -164,7 +166,6 @@ with tab1:
         gemini_key = st.text_input("Enter Gemini Secret API Key:", type="password")
         meta_token = st.text_input("Enter Meta Account Access Token:", type="password")
         
-        # EXCLUSIVE LINK INJECTION ONLY FOR SILVER/FREE TRIAL USERS AS REQUESTED
         if not is_platform_owner and "Pro" not in current_active_plan:
             st.write("---")
             st.markdown("#### 📘 Key Generation Assistance")
@@ -215,7 +216,7 @@ with tab2:
             col_m2.metric("Trackable Competitor Indian Volume", "₹45,000 Max Limit", "Limited")
             st.info("💡 Upgrade to Starter, Growth, or Pro to open full Indian Dropshipping stores list.")
 
-    # --- HANDLING GLOBAL WORLDWIDE MARKET DATA (EXCLUSIVE PRO MATRIX REPLICA) ---
+    # --- HANDLING GLOBAL WORLDWIDE MARKET DATA (EXCLUSIVE PRO MATRIX) ---
     elif market_source == "🌍 Worldwide Global Market (Pro Only)":
         if is_platform_owner or "Pro" in current_active_plan:
             st.success(f"⚡ Data Sync State: Premium Worldwide Spy Matrix Unlocked (Updated: {today_stamp})")
