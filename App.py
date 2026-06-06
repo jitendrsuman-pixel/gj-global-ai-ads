@@ -24,14 +24,49 @@ Generate structured output:
 Naturally mention the verified link {} inside conversion call-to-actions.
 """
 
-# --- ⚙️ CONFIG (SABSE PEHLE RUN HONA ZAROORI HAI) ---
-st.set_page_config(page_title="GJ GLOBAL AI ADS", page_icon="🚩", layout="wide")
+# --- ⚙️ CONFIG ---
+st.set_page_config(page_title="GJ GLOBAL AI ADS - Enterprise", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
-# --- 🚩 PREMIUM HEADER DESIGN ---
-st.title("🚩 जय श्री RAM 🚩")
-st.subheader("JAI SHREE RAM | GJ GLOBAL AI ADS CORE INTERFACE")
-st.divider()
+# --- 🌐 NATIVE STYLING ---
+st.markdown("""
+    <style>
+    div.stButton > button:first-child {
+        background: linear-gradient(45deg, #ff4b4b, #ff761a); color: white; font-weight: bold;
+        border: none; padding: 10px 25px; border-radius: 8px; width: 100%;
+    }
+    .pricing-card {
+        background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 15px;
+    }
+    </style>
+""", unsafe_allowed_html=True)
+
+# --- 💾 APP STATE DATABASE INIT ---
+if "users_db" not in st.session_state: 
+    st.session_state.users_db = {}
+if "current_user" not in st.session_state: 
+    st.session_state.current_user = None
+if "saved_gemini_key" not in st.session_state: 
+    st.session_state.saved_gemini_key = ""
+
+# Fixed Platform Pricing Matrix
+fixed_prices = {
+    "7 Days Free Trial": 0,
+    "Silver (Monthly)": 19, 
+    "Standard (6-Month)": 49, 
+    "Standard (Yearly)": 249, 
+    "Premium (Yearly)": 499
+}
+usd_to_inr_rate = 91.50
+razorpay_link = "https://razorpay.me/@gjglobalaiads"
+stripe_link = "https://checkout.stripe.com/recurring-autopilot"
+
+indian_spied_data = [
+    {"Target Winning Product": "Mini Portable Ultrasonic Washing Machine", "Estimated Daily Orders Managed": "1,450", "Calculated Product Win Rate Metric": "94%"},
+    {"Target Winning Product": "Rechargeable Automatic Hair Braider Combo", "Estimated Daily Orders Managed": "890", "Calculated Product Win Rate Metric": "89%"},
+    {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
+]
 
 # --- 🔒 SECURITY UTILITIES ---
 def hash_password(password):
@@ -48,148 +83,103 @@ def validate_and_fix_url(url):
         url = "https://" + url
     return url
 
-# --- 💾 APP STATE INIT ---
-if "fixed_prices" not in st.session_state:
-    st.session_state.fixed_prices = {
-        "7 Days Free Trial": 0,
-        "Silver (Monthly)": 19, 
-        "Standard (6-Month)": 49, 
-        "Standard (Yearly)": 249, 
-        "Premium (Yearly)": 499
-    }
-if "usd_to_inr_rate" not in st.session_state: st.session_state.usd_to_inr_rate = 91.50
-if "razorpay_link" not in st.session_state: st.session_state.razorpay_link = "https://razorpay.me/@gjglobalaiads"
-if "stripe_link" not in st.session_state: st.session_state.stripe_link = "https://checkout.stripe.com/recurring-autopilot"
+# --- 🚩 HEADER BLOCK ---
+st.title("🚩 जय श्री RAM 🚩")
+st.subheader("GJ GLOBAL AI ADS | ENTERPRISE HUB")
+st.divider()
 
-if "indian_spied_data" not in st.session_state:
-    st.session_state.indian_spied_data = [
-        {"Target Winning Product": "Mini Portable Ultrasonic Washing Machine", "Estimated Daily Orders Managed": "1,450", "Calculated Product Win Rate Metric": "94%"},
-        {"Target Winning Product": "Rechargeable Automatic Hair Braider Combo", "Estimated Daily Orders Managed": "890", "Calculated Product Win Rate Metric": "89%"},
-        {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
-    ]
-
-if "users_db" not in st.session_state: st.session_state.users_db = {}
-if "current_user" not in st.session_state: st.session_state.current_user = None
-if "otp_sent" not in st.session_state: st.session_state.otp_sent = None
-if "marketing_videos" not in st.session_state: st.session_state.marketing_videos = []
-if "app_self_lock" not in st.session_state: st.session_state.app_self_lock = False
-if "saved_gemini_key" not in st.session_state: st.session_state.saved_gemini_key = ""
-
-# --- 🌐 LANGUAGE SETTINGS ---
-languages = {
-    "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "query_placeholder": "Ask anything..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन लॉन्च करें", "spy": "जासूसी टूल", "help": "AI सहायता केंद्र", "query_placeholder": "कुछ भी पूछें..."}
-}
-selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
-lang = languages[selected_lang]
-user_country = st.sidebar.radio("📍 Billing Region", ["Inside India (INR ₹)", "Outside India (USD $)"])
-
-# --- 📝 AUTH SYSTEM ---
+# --- 📝 PROPORTIONAL AUTHENTICATION SYSTEM ---
 if st.session_state.current_user is None:
-    st.subheader(f"🔐 {lang['welcome']}")
-    auth_mode = st.radio("Mode", ["Sign Up", "Log In"])
+    st.markdown("### 🔐 Platform Access Gateway")
+    auth_mode = st.tabs(["Create Account (Sign Up)", "Access Portal (Log In)"])
     
-    if auth_mode == "Sign Up":
-        name = sanitize_input(st.text_input("Full Name:"))
-        email = sanitize_input(st.text_input("Email ID:")).lower()
-        phone = sanitize_input(st.text_input("Phone Number:"))
-        password_input = st.text_input("Password:", type="password")
-        plan_choice = st.selectbox("Plan", list(st.session_state.fixed_prices.keys()))
+    with auth_mode[0]:
+        st.write("#### Register New Enterprise Node")
+        reg_name = st.text_input("Your Full Name:", key="reg_name")
+        reg_email = st.text_input("Email Address (User ID):", key="reg_email").lower().strip()
+        reg_phone = st.text_input("Mobile Number:", key="reg_phone")
+        reg_pass = st.text_input("Choose Secure Password:", type="password", key="reg_pass")
+        reg_plan = st.selectbox("Select Initial Access Plan:", list(fixed_prices.keys()), key="reg_plan")
         
-        dollar_val = st.session_state.fixed_prices[plan_choice]
-        if plan_choice == "7 Days Free Trial":
-            final_price_str = "₹0 (Free Trial Active)" if user_country == "Inside India (INR ₹)" else "$0 USD"
-        else:
-            final_price_str = f"₹{round(dollar_val * st.session_state.usd_to_inr_rate, 2)}" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
-        st.info(f"💳 Value: {final_price_str}")
-        
-        if st.button("Generate OTP ✉️"):
-            if name and email and phone and password_input:
-                st.session_state.otp_sent = str(random.randint(112233, 998877))
-            else: 
-                st.error("Please fill all details!")
-            
-        if st.session_state.otp_sent:
-            st.info(f"✨ OTP: `{st.session_state.otp_sent}`")
-            otp_input = st.text_input("Enter Code:")
-            if st.button("Register & Create Account 🎉"):
-                if otp_input == st.session_state.otp_sent:
-                    trial_days = 7 if plan_choice == "7 Days Free Trial" else 30
-                    st.session_state.users_db[email] = {
-                        "name": name, 
-                        "password": hash_password(password_input), 
-                        "plan": plan_choice, 
-                        "phone": phone, 
-                        "signup_date": datetime.date.today(), 
+        if st.button("Complete Fast Track Registration 🚀", key="signup_btn"):
+            if reg_name and reg_email and reg_phone and reg_pass:
+                if reg_email in st.session_state.users_db:
+                    st.error("User ID already registered! Please log in.")
+                else:
+                    trial_days = 7 if reg_plan == "7 Days Free Trial" else 30
+                    st.session_state.users_db[reg_email] = {
+                        "name": reg_name,
+                        "password": hash_password(reg_pass),
+                        "plan": reg_plan,
+                        "phone": reg_phone,
+                        "signup_date": datetime.date.today(),
                         "days": trial_days
                     }
-                    st.session_state.current_user = email
-                    st.success("Account Created Successfully!")
-                    st.session_state.otp_sent = None
+                    st.session_state.current_user = reg_email
+                    st.success("Registration Successful! Welcome to the Core Dashboard.")
                     st.rerun()
-                else:
-                    st.error("Invalid OTP Code!")
-    else:
-        email = sanitize_input(st.text_input("Email:")).lower()
-        password = st.text_input("Password:", type="password")
-        if st.button("Login 🔓"):
-            if email in st.session_state.users_db and st.session_state.users_db[email]["password"] == hash_password(password):
-                st.session_state.current_user = email
+            else:
+                st.error("Please fill all the mandatory fields completely!")
+                
+    with auth_mode[1]:
+        st.write("#### User Authorization Node")
+        login_email = st.text_input("Registered Email ID:", key="login_email").lower().strip()
+        login_pass = st.text_input("Password Key:", type="password", key="login_pass")
+        
+        if st.button("Authorize Account Security 🔓", key="login_btn"):
+            if login_email in st.session_state.users_db and st.session_state.users_db[login_email]["password"] == hash_password(login_pass):
+                st.session_state.current_user = login_email
+                st.success("Access Granted!")
                 st.rerun()
-            else: st.error("Invalid credentials!")
-            
-    # Rukna tabhi hai jab user login na ho, par signup fields ko destroy nahi karna
+            else:
+                st.error("Invalid credentials or user record missing.")
     st.stop()
 
-# --- 🚀 AUTOMATIC VALIDITY LOCKDOWN SYSTEM ---
+# --- 🚀 SECURE APP ENTRY LAYER ---
 user_data = st.session_state.users_db[st.session_state.current_user]
 expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days'])
+remaining_days = (expiry_date - datetime.date.today()).days
 
-if datetime.date.today() > expiry_date:
-    st.error("❌ SUBSCRIPTION / TRIAL EXPIRED!")
-    active_gateway = st.session_state.razorpay_link if user_country == "Inside India (INR ₹)" else st.session_state.stripe_link
-    st.markdown(f'<a href="{active_gateway}" target="_blank"><button style="background: red; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer;">💳 Clear Dues Now to Continue</button></a>', unsafe_allowed_html=True)
-    if st.sidebar.button("Log Out 🔒"):
-        st.session_state.current_user = None
-        st.rerun()
-    st.stop()
+# Sidebar Metadata
+st.sidebar.markdown(f"### 👤 Active Session")
+st.sidebar.write(f"**User:** {user_data['name']}")
+st.sidebar.info(f"**Current Plan:** {user_data['plan']}")
+st.sidebar.write(f"**Days Left:** {max(0, remaining_days)} Days")
 
-# --- 🔒 SECURITY WALLS ---
-st.sidebar.markdown(f"👤 Account: **{user_data['name']}** ({user_data['plan']})")
-
-if st.sidebar.button("Logout 🔒"):
+if st.sidebar.button("Exit Gateway Session 🔒"):
     st.session_state.current_user = None
     st.rerun()
 
-# --- 👑 ADMIN CONTROLS ---
-admin_email = st.sidebar.text_input("Verify Admin Route:", placeholder="owner@gmail.com")
-if admin_email.lower() == OWNER_EMAIL.lower():
-    st.sidebar.success("Admin Control Active!")
-    st.session_state.usd_to_inr_rate = st.sidebar.number_input("Set Dollar Rate:", value=st.session_state.usd_to_inr_rate)
+# Account Validity Check
+if datetime.date.today() > expiry_date:
+    st.error("❌ SUBSCRIPTION / TRIAL LIFETIME EXPIRED! Please clear dues below to unfreeze.")
+    st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="background: red; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer;">💳 Upgrade/Renew via Secure Razorpay</button></a>', unsafe_allowed_html=True)
+    st.stop()
 
-# --- 🎯 MAIN INTERFACE TABS ---
-tab1, tab2, tab3, tab4 = st.tabs(["🎯 Meta Ads Automator", "🕵️ Tracker", "🎥 Reviews", "🤖 Help Center"])
+# --- 🎯 MAIN DASHBOARD INTERFACE ---
+tab1, tab2, tab3, tab4 = st.tabs(["🎯 Meta Ads Automator", "🕵️ Competitor Tracker", "💳 Premium Subscription Store", "🤖 AI Support Desk"])
 
 with tab1:
-    st.markdown("### 📖 Setup Guide Manual")
-    st.info("Get Gemini API Key via Google AI Studio & Meta Access Token via Meta for Developers dashboard.")
-    
+    st.markdown("### Meta AI Campaign Builder Engine")
     col1, col2 = st.columns(2)
     with col1:
-        st.header("🛒 Store Data")
-        raw_url = st.text_input("Storefront URL:", placeholder="https://yourstore.com")
+        st.subheader("🛒 Store Config")
+        raw_url = st.text_input("Target Storefront URL:", placeholder="https://yourstore.com")
         store_url = validate_and_fix_url(raw_url)
-        product_desc = sanitize_input(st.text_area("Product Strategy Narrative Description:"))
+        product_desc = st.text_area("Product Strategy Narrative Context:")
     with col2:
-        st.header("🎯 Target Acquisition Node")
-        gemini_key = st.text_input("Gemini Secret Key Input:", type="password")
-        if gemini_key: st.session_state.saved_gemini_key = sanitize_input(gemini_key)
-        
-        if st.button(lang['run']):
-            if not st.session_state.saved_gemini_key: st.error("❌ Missing valid Gemini key.")
-            elif not store_url: st.error("❌ Please enter a valid campaign URL.")
+        st.subheader("🔑 Access Vectors")
+        gemini_key = st.text_input("Enter Gemini Secret API Key:", type="password")
+        if gemini_key: 
+            st.session_state.saved_gemini_key = sanitize_input(gemini_key)
+            
+        if st.button("Generate Smart Campaign & Launch 🚀"):
+            if not st.session_state.saved_gemini_key: 
+                st.error("Missing Gemini Decryption Authorization Key.")
+            elif not store_url: 
+                st.error("Please insert a valid target domain URL context.")
             else:
-                with st.spinner("🔒 Activating AI Buying Engine..."):
+                with st.spinner("Analyzing parameters via core system neural layer..."):
                     try:
                         os.environ["GOOGLE_API_VERSION"] = "v1"
                         genai.configure(api_key=st.session_state.saved_gemini_key)
@@ -197,37 +187,62 @@ with tab1:
                         
                         smart_campaign_prompt = RAW_TEMPLATE.format(store_url, product_desc, store_url)
                         response = model.generate_content(smart_campaign_prompt)
-                        st.success("🎯 Strategy Deployment Complete!")
+                        st.success("Target Acquisition Framework Generated Successfully!")
                         st.markdown(response.text)
                         st.balloons()
                     except Exception as err:
-                        st.error(f"❌ Error: {str(err)}")
+                        st.error(f"Core Exception Node Rejected: {str(err)}")
 
 with tab2:
-    st.subheader("🕵️ Tracking Dashboard")
-    if "Silver" in user_data["plan"]:
+    st.markdown("### 🕵️ Ad Intelligence Board & Winning Products")
+    if user_data["plan"] == "Silver (Monthly)":
         st.error("🔒 Upgrade plan to lock active product tracking engines.")
     else:
-        st.table(st.session_state.indian_spied_data)
+        st.table(indian_spied_data)
 
 with tab3:
-    st.subheader("🎥 Video Module Panel")
-    st.info("No system reviews loaded yet.")
+    st.markdown("### 💳 Upgrade Your Subscription Tier")
+    st.write("Apne operations ko upgrade karne ke liye niche diye gae premium tiers me se best package choose karein:")
+    
+    p_col1, p_col2, p_col3 = st.columns(3)
+    with p_col1:
+        st.markdown(f"""<div class='pricing-card'>
+            <h4>Silver Package</h4>
+            <h2>₹{round(19 * usd_to_inr_rate)} / month</h2>
+            <p>Basic Automation & Funnels</p>
+            <a href='{razorpay_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#ff4b4b; color:white; border:none; padding:8px;'>Buy via Razorpay</button></a>
+        </div>""", unsafe_allowed_html=True)
+    with p_col2:
+        st.markdown(f"""<div class='pricing-card' style='border: 2px solid #ff761a;'>
+            <h4>Standard Deal</h4>
+            <h2>₹{round(49 * usd_to_inr_rate)} / 6-Months</h2>
+            <p>Full Competitor Tracker Engine Active</p>
+            <a href='{razorpay_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#ff761a; color:white; border:none; padding:8px;'>Buy via Razorpay</button></a>
+        </div>""", unsafe_allowed_html=True)
+    with p_col3:
+        st.markdown(f"""<div class='pricing-card'>
+            <h4>Enterprise Premium</h4>
+            <h2>₹{round(499 * usd_to_inr_rate)} / Yearly</h2>
+            <p>Max Speed Global Asset Tracking Stream</p>
+            <a href='{stripe_link}' target='_blank'><button style='width:100%; border-radius:5px; background-color:#25d366; color:white; border:none; padding:8px;'>Buy via International Stripe</button></a>
+        </div>""", unsafe_allowed_html=True)
 
 with tab4:
-    st.subheader("🤖 AI Help Center Desk")
-    user_query = sanitize_input(st.text_input("State your roadblock below:"))
+    st.markdown("### 🤖 Enterprise Help Center Desk")
+    user_query = st.text_input("State your setup roadblock parameter below:")
     if st.button("Transmit Question Node 💬"):
-        if not user_query: st.warning("Please type something.")
-        elif not st.session_state.saved_gemini_key: st.error("❌ Input your Gemini Private Key in 'Tab 1' first.")
+        if not user_query: 
+            st.warning("Empty question parameters cannot be routed.")
+        elif not st.session_state.saved_gemini_key: 
+            st.error("Input your Gemini Private Key in 'Tab 1' first.")
         else:
-            with st.spinner("🧠 Analyzing query..."):
+            with st.spinner("Processing solutions..."):
                 try:
                     os.environ["GOOGLE_API_VERSION"] = "v1"
                     genai.configure(api_key=st.session_state.saved_gemini_key)
                     model = genai.GenerativeModel('gemini-1.5-flash')
-                    support_prompt = f"Fix this issue safely: {user_query}. Respond natively in choice: {selected_lang}"
+                    support_prompt = f"Fix this issue safely: {user_query}. Respond natively in simple instructions."
                     response = model.generate_content(support_prompt)
                     st.info(response.text)
                 except Exception as api_err:
-                    st.error(f"❌ Network Fault: {str(api_err)}")
+                    st.error(f"Network Fault: {str(api_err)}")
