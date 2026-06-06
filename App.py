@@ -5,7 +5,13 @@ import re
 import random
 import os
 import hashlib
+import smtplib
+from email.mime.text import MIMEText
 import google.generativeai as genai
+
+# --- ⚙️ PRODUCTION CONFIGURATION (REAL OTP SYSTEM BUILT-IN) ---
+SMTP_EMAIL = "armygamingtotal@gmail.com"  
+SMTP_PASSWORD = "huopctngzcjkdcde"  # Secure Key integrated successfully
 
 # --- 🎯 BASE AI PROMPT TEMPLATE ---
 RAW_TEMPLATE = """
@@ -24,7 +30,6 @@ Generate structured output:
 Naturally mention the verified link {} inside conversion call-to-actions.
 """
 
-# --- ⚙️ CONFIG ---
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Enterprise", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
@@ -42,7 +47,6 @@ if "generated_otp" not in st.session_state:
 if "temp_user_data" not in st.session_state:
     st.session_state.temp_user_data = {}
 
-# Fixed Platform Pricing Matrix
 fixed_prices = {
     "7 Days Free Trial": 0,
     "Silver (Monthly)": 19, 
@@ -60,7 +64,7 @@ indian_spied_data = [
     {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
 ]
 
-# --- 🔒 SECURITY UTILITIES ---
+# --- 🔒 SECURITY & EMAIL UTILITIES ---
 def hash_password(password):
     return hashlib.sha256(str.encode(password)).hexdigest()
 
@@ -74,6 +78,20 @@ def validate_and_fix_url(url):
     if not (url.startswith("http://") or url.startswith("https://")):
         url = "https://" + url
     return url
+
+def send_otp_email(target_email, otp_code):
+    try:
+        msg = MIMEText(f"Jai Shree Ram!\n\nYour 6-Digit Security Verification Code for GJ GLOBAL AI ADS is: {otp_code}\n\nValid for 10 minutes.")
+        msg['Subject'] = f"{otp_code} is your GJ GLOBAL AI ADS Verification Code"
+        msg['From'] = SMTP_EMAIL
+        msg['To'] = target_email
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.sendmail(SMTP_EMAIL, target_email, msg.as_string())
+        return True
+    except Exception as e:
+        return False
 
 # --- 🚩 HEADER BLOCK ---
 st.title("🚩 जय श्री RAM 🚩")
@@ -95,42 +113,47 @@ if st.session_state.current_user is None:
             reg_plan = st.selectbox("Select Initial Access Plan:", list(fixed_prices.keys()), key="reg_plan")
             
             dollar_val = fixed_prices[reg_plan]
-            if reg_plan == "7 Days Free Trial":
-                final_price_str = "Status: FREE TRIAL"
-            else:
-                final_price_str = f"Price: ₹{round(dollar_val * usd_to_inr_rate, 2)} Approx"
+            final_price_str = "Status: FREE TRIAL" if reg_plan == "7 Days Free Trial" else f"Price: ₹{round(dollar_val * usd_to_inr_rate, 2)} Approx"
             st.info(final_price_str)
             
-            if st.button("Continue 🚀", key="signup_btn"):
-                if reg_name and reg_email and reg_phone and reg_pass:
-                    if reg_email in st.session_state.users_db:
-                        st.error("User ID already registered! Please log in.")
+            st.write("") # Layout spacing
+            
+            # Smart Center Alignment Strategy for Universal Devices (Full Responsive Grid Layout)
+            col_left, col_center, col_right = st.columns([1.0, 2.0, 1.0])
+            with col_center:
+                # use_container_width=True makes the button dynamically scale across Mobile, Tablets, or Monitors smoothly
+                if st.button("Continue 🚀", key="signup_btn", use_container_width=True, type="primary"):
+                    if reg_name and reg_email and reg_phone and reg_pass:
+                        if reg_email in st.session_state.users_db:
+                            st.error("User ID already registered! Please log in.")
+                        else:
+                            with st.spinner("Dispatching Secure OTP to your Email..."):
+                                secure_otp = str(random.randint(100100, 999999))
+                                if send_otp_email(reg_email, secure_otp):
+                                    st.session_state.generated_otp = secure_otp
+                                    st.session_state.temp_user_data = {
+                                        "name": reg_name,
+                                        "email": reg_email,
+                                        "phone": reg_phone,
+                                        "password": hash_password(reg_pass),
+                                        "plan": reg_plan
+                                    }
+                                    st.session_state.signup_stage = "otp_verification"
+                                    st.rerun()
+                                else:
+                                    st.error("Email Routing Fault. Please verify server connection configurations.")
                     else:
-                        # Generate Random Secure 6-Digit OTP Code Node
-                        st.session_state.generated_otp = str(random.randint(100100, 999999))
-                        # Save Temporary State Context
-                        st.session_state.temp_user_data = {
-                            "name": reg_name,
-                            "email": reg_email,
-                            "phone": reg_phone,
-                            "password": hash_password(reg_pass),
-                            "plan": reg_plan
-                        }
-                        st.session_state.signup_stage = "otp_verification"
-                        st.rerun()
-                else:
-                    st.error("Please fill all fields completely before continuing.")
+                        st.error("Please fill all fields completely before continuing.")
                     
         elif st.session_state.signup_stage == "otp_verification":
             st.write("#### 🛡️ OTP Code Verification layer")
-            st.warning(f"Verification tracking token dispatched successfully to registration endpoint container.")
-            st.info(f"✨ **[🔒 Secure Gateway Router Node]** System simulated authentication code is: `{st.session_state.generated_otp}`")
+            st.warning(f"Verification code token dispatched successfully to: **{st.session_state.temp_user_data['email']}** (Check Spam folder if not received)")
             
-            otp_input = st.text_input("Enter 6-Digit Verification Code:", key="otp_input_field")
+            otp_input = st.text_input("Enter 6-Digit Verification Code Received on Email:", key="otp_input_field")
             
             col_b1, col_b2 = st.columns(2)
             with col_b1:
-                if st.button("Verify & Create Account Account 🎉", key="final_confirm_btn"):
+                if st.button("Verify & Create Account 🎉", key="final_confirm_btn", use_container_width=True):
                     if otp_input == st.session_state.generated_otp:
                         t_data = st.session_state.temp_user_data
                         trial_days = 7 if t_data["plan"] == "7 Days Free Trial" else 30
@@ -146,12 +169,12 @@ if st.session_state.current_user is None:
                         st.session_state.current_user = t_data["email"]
                         st.session_state.signup_stage = "form"
                         st.session_state.generated_otp = None
-                        st.success("Verification Complete! Account Node Deployed.")
+                        st.success("Verification Complete! Welcome Center Initialized.")
                         st.rerun()
                     else:
                         st.error("Invalid security verification code token! Please try again.")
             with col_b2:
-                if st.button("Back to Form ↩️", key="back_to_form_btn"):
+                if st.button("Back to Form ↩️", key="back_to_form_btn", use_container_width=True):
                     st.session_state.signup_stage = "form"
                     st.rerun()
                 
@@ -160,23 +183,13 @@ if st.session_state.current_user is None:
         login_email = st.text_input("Registered Email ID:", key="login_email").lower().strip()
         login_pass = st.text_input("Password Key:", type="password", key="login_pass")
         
-        if st.button("Authorize Account Security 🔓", key="login_btn"):
+        if st.button("Authorize Account Security 🔓", key="login_btn", use_container_width=True):
             if login_email in st.session_state.users_db and st.session_state.users_db[login_email]["password"] == hash_password(login_pass):
                 st.session_state.current_user = login_email
                 st.success("Access Granted!")
                 st.rerun()
             else:
-                # Direct guest override logic to prevent authentication loops during setup
-                st.session_state.users_db[login_email] = {
-                    "name": "Enterprise Trader",
-                    "password": hash_password(login_pass),
-                    "plan": "7 Days Free Trial",
-                    "phone": "",
-                    "signup_date": datetime.date.today(),
-                    "days": 7
-                }
-                st.session_state.current_user = login_email
-                st.rerun()
+                st.error("Invalid Credentials or Record Missing.")
     st.stop()
 
 # --- 🚀 SECURE APP ENTRY LAYER ---
@@ -184,7 +197,6 @@ user_data = st.session_state.users_db[st.session_state.current_user]
 expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days'])
 remaining_days = (expiry_date - datetime.date.today()).days
 
-# Sidebar Metadata
 st.sidebar.markdown(f"### 👤 Active Session")
 st.sidebar.write(f"**User:** {user_data['name']}")
 st.sidebar.info(f"**Current Plan:** {user_data['plan']}")
@@ -194,7 +206,6 @@ if st.sidebar.button("Exit Gateway Session 🔒"):
     st.session_state.current_user = None
     st.rerun()
 
-# Account Validity Check
 if datetime.date.today() > expiry_date:
     st.error("❌ SUBSCRIPTION / TRIAL LIFETIME EXPIRED! Please clear dues below to unfreeze.")
     st.write(f"Renew your license here: {razorpay_link}")
@@ -217,7 +228,7 @@ with tab1:
         if gemini_key: 
             st.session_state.saved_gemini_key = sanitize_input(gemini_key)
             
-        if st.button("Generate Smart Campaign & Launch 🚀"):
+        if st.button("Generate Smart Campaign & Launch 🚀", use_container_width=True):
             if not st.session_state.saved_gemini_key: 
                 st.error("Missing Gemini Decryption Authorization Key.")
             elif not store_url: 
@@ -270,7 +281,7 @@ with tab3:
 with tab4:
     st.markdown("### 🤖 Enterprise Help Center Desk")
     user_query = st.text_input("State your roadblock parameter below:")
-    if st.button("Transmit Question Node 💬"):
+    if st.button("Transmit Question Node 💬", use_container_width=True):
         if not user_query: 
             st.warning("Empty question parameters cannot be routed.")
         elif not st.session_state.saved_gemini_key: 
