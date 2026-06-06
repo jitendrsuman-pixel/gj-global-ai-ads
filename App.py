@@ -119,7 +119,7 @@ if "saved_gemini_key" not in st.session_state: st.session_state.saved_gemini_key
 # --- 🌐 MULTILINGUAL DICTIONARY ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरीें सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
+    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
     "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
@@ -326,6 +326,5 @@ with tab1:
                         genai.configure(api_key=st.session_state.saved_gemini_key)
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
-                        # ANTI-CRASH TEMPLATE PATTERN
-                        raw_campaign_template = (
-                            "You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-t
+                        # Fix: Concatenating line segments to avoid multi-line string syntax crash
+                        p1 = "You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targete
