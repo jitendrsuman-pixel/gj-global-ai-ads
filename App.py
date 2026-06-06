@@ -10,24 +10,24 @@ import google.generativeai as genai
 # --- ⚙️ CONFIG (SABSE PEHLE RUN HONA ZAROORI HAI) ---
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
 
-# --- 🚩 JAI SHREE RAM SPLASH SCREEN ---
-def splash_screen():
-    if 'splash_done' not in st.session_state:
-        placeholder = st.empty()
-        placeholder.markdown("""
-            <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                        color: #ff4500; font-size: 60px; font-weight: bold; background-color: #0e1117; font-family: 'Arial'; text-shadow: 0px 0px 20px #ff4500;">
-                <p style="margin-bottom: 10px;">🚩 जय श्री RAM 🚩</p>
-                <p style="font-size: 35px; color: #ffffff; letter-spacing: 2px;">JAI SHREE RAM</p>
-                <div style="margin-top: 20px; font-size: 16px; color: #888;">Initializing Core Tracking Infrastructure...</div>
-            </div>
-        """, unsafe_allowed_html=True)
-        time.sleep(4)
-        placeholder.empty()
-        st.session_state.splash_done = True
+OWNER_EMAIL = "armygamingtotal@gmail.com"
+USD_TO_INR = 85
 
-# Splash screen config ke turant baad bina kisi UI interruption ke chalegi
-splash_screen()
+# --- 🚩 JAI SHREE RAM SPLASH SCREEN (Python 3.14 Thread Fix) ---
+if 'splash_done' not in st.session_state:
+    placeholder = st.empty()
+    placeholder.markdown("""
+        <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+                    color: #ff4500; font-size: 60px; font-weight: bold; background-color: #0e1117; font-family: 'Arial'; text-shadow: 0px 0px 20px #ff4500;">
+            <p style="margin-bottom: 10px;">🚩 जय श्री RAM 🚩</p>
+            <p style="font-size: 35px; color: #ffffff; letter-spacing: 2px;">JAI SHREE RAM</p>
+            <div style="margin-top: 20px; font-size: 16px; color: #888;">Initializing Core Tracking Infrastructure...</div>
+        </div>
+    """, unsafe_allowed_html=True)
+    time.sleep(4)
+    placeholder.empty()
+    st.session_state.splash_done = True
+    st.rerun()
 
 # --- 🔒 CYBER SECURITY: DATA CRYPTO & HASHING ---
 def hash_password(password):
@@ -38,7 +38,7 @@ def sanitize_input(text):
     clean = re.sub(r'<[^>]*?>', '', str(text))
     return clean.replace('"', '').replace("'", "").replace(";", "").strip()
 
-# --- Custom UI Styles Injection ---
+# Custom UI Styles Injection
 st.markdown("""
     <style>
     iframe {pointer-events: none;}
@@ -53,16 +53,47 @@ st.markdown("""
     </style>
 """, unsafe_allowed_html=True)
 
-OWNER_EMAIL = "armygamingtotal@gmail.com"
-USD_TO_INR = 85
+# App Data Real-Time State Init (Fully Editable by Admin Master)
+if "fixed_prices" not in st.session_state:
+    st.session_state.fixed_prices = {
+        "Silver (Monthly)": 19,
+        "Standard (6-Month)": 49,
+        "Standard (Yearly)": 249,
+        "Premium (Yearly)": 499
+    }
 
-# Locked Pricing Database (As you specified in Dollars)
-FIXED_PRICES = {
-    "Silver (Monthly)": 19,
-    "Standard (6-Month)": 49,
-    "Standard (Yearly)": 249,
-    "Premium (Yearly)": 499
-}
+# Editable Payment Gateways Links State
+if "razorpay_link" not in st.session_state:
+    st.session_state.razorpay_link = "https://razorpay.me/@gjglobalaiads"
+if "stripe_link" not in st.session_state:
+    st.session_state.stripe_link = "https://checkout.stripe.com/recurring-autopilot"
+
+if "indian_spied_data" not in st.session_state:
+    st.session_state.indian_spied_data = [
+        {"Target Winning Product": "Mini Portable Ultrasonic Washing Machine", "Observed Ad Framework Strategy": "Meta Video Engagement Run", "Estimated Daily Orders Managed": "1,450", "Calculated Product Win Rate Metric": "94%"},
+        {"Target Winning Product": "Rechargeable Automatic Hair Braider Combo", "Observed Ad Framework Strategy": "Hinglish Meta Copy Targeting GenZ", "Estimated Daily Orders Managed": "890", "Calculated Product Win Rate Metric": "89%"},
+        {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Observed Ad Framework Strategy": "Direct Store Hook + High ROAS Matrix", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
+    ]
+
+if "global_spied_data" not in st.session_state:
+    st.session_state.global_spied_data = {
+        "Global_Winner_Node_01": {
+            "Corporate_Store_Identifier": "LuxFinds Collective US-EU",
+            "Tracked_Product_Asset": "Anti-Gravity Flame Air Diffuser Humidifier",
+            "Daily_Gross_Sales_USD": "$24,800",
+            "Observed_Ad_Channel": "Meta Canvas Interactive Feed Ads",
+            "Verified_Targeting_Matrix": "Engaged Shoppers + Home Decor Interest",
+            "Calculated_Win_Index": "93.5%"
+        },
+        "Global_Winner_Node_02": {
+            "Corporate_Store_Identifier": "ZenVibe Apparel Co.",
+            "Tracked_Product_Asset": "Orthopedic Premium Cushion Comfort Slide Sandal",
+            "Daily_Gross_Sales_USD": "$19,150",
+            "Observed_Ad_Channel": "Meta Carousel Dynamic Retargeting Ads",
+            "Verified_Targeting_Matrix": "Frequent Travelers + Podiatry Health",
+            "Calculated_Win_Index": "91.2%"
+        }
+    }
 
 # Session Management
 if "users_db" not in st.session_state: st.session_state.users_db = {}
@@ -72,10 +103,10 @@ if "global_performance" not in st.session_state: st.session_state.global_perform
 if "marketing_videos" not in st.session_state: st.session_state.marketing_videos = []
 if "app_self_lock" not in st.session_state: st.session_state.app_self_lock = False
 
-# --- 🌐 MULTILINGUAL DICTIONARY & SELECTOR (Splash Screen ke Baad) ---
+# --- 🌐 MULTILINGUAL DICTIONARY & SELECTOR ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
+    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरीें सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
     "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
@@ -85,7 +116,7 @@ lang = languages[selected_lang]
 
 user_country = st.sidebar.radio("📍 Select Billing Region", ["Inside India (INR ₹)", "Outside India (International USD $)"])
 
-# --- 📝 SIGNUP / LOGIN SYSTEM WITH PASSWORD HASHING ---
+# --- 📝 SIGNUP / LOGIN SYSTEM ---
 if st.session_state.current_user is None:
     st.title(f"🔐 {lang['welcome']}")
     auth_mode = st.radio("Authentication Mode", ["Sign Up", "Log In"])
@@ -95,10 +126,9 @@ if st.session_state.current_user is None:
         email = sanitize_input(st.text_input("Email ID:")).lower()
         phone = sanitize_input(st.text_input("Phone Number:"))
         custom_password = st.text_input("Create Password:", type="password")
-        plan_choice = st.selectbox("Select Subscription Tier Plan", list(FIXED_PRICES.keys()))
+        plan_choice = st.selectbox("Select Subscription Tier Plan", list(st.session_state.fixed_prices.keys()))
         
-        # Calculate Price dynamic display
-        dollar_val = FIXED_PRICES[plan_choice]
+        dollar_val = st.session_state.fixed_prices[plan_choice]
         final_price_str = f"₹{dollar_val * USD_TO_INR} (Approx INR)" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
         st.info(f"💳 Selected Plan Value: **{final_price_str}**")
         
@@ -153,24 +183,49 @@ expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days
 
 if datetime.date.today() > expiry_date:
     st.error("❌ SUBSCRIPTION EXPIRED: Your account billing cycle has ended!")
-    gateway_url = "https://razorpay.me/@gjglobalaiads" if user_country == "Inside India (INR ₹)" else "https://checkout.stripe.com/recurring-autopilot"
-    st.markdown(f'<a href="{gateway_url}" target="_blank"><button style="background: linear-gradient(to right, #ff3333, #b30000); color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold;">💳 Clear Dues via Secured Gateway Node Now</button></a>', unsafe_allowed_html=True)
+    
+    # Fully Dynamic Redirects based on Admin Panel configs
+    active_gateway = st.session_state.razorpay_link if user_country == "Inside India (INR ₹)" else st.session_state.stripe_link
+    st.markdown(f'<a href="{active_gateway}" target="_blank"><button style="background: linear-gradient(to right, #ff3333, #b30000); color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold;">💳 Clear Dues via Secured Gateway Node Now</button></a>', unsafe_allowed_html=True)
     if st.sidebar.button("Log Out Node 🔒"):
         st.session_state.current_user = None
         st.rerun()
     st.stop()
 
-# --- 👑 OWNER ADMIN SYSTEM OVERRIDE ---
-st.sidebar.markdown("### 👑 Owner Controls")
+# --- 👑 OWNER ADMIN MASTER CONTROL OVERLAY PANEL ---
+st.sidebar.markdown("### 👑 Master Admin Controls")
 admin_email = st.sidebar.text_input("Verify Admin Route:", placeholder="owner@gmail.com")
 if admin_email.lower() == OWNER_EMAIL.lower():
-    st.sidebar.success("Root Admin Environment Initialized.")
+    st.sidebar.success("Root Sovereign Control Dash Active!")
+    
+    # 💳 GATEWAYS EDIT LINKS ROUTER BLOCK
+    with st.sidebar.expander("💳 Edit Live Payment Gateways Links"):
+        st.session_state.razorpay_link = st.sidebar.text_input("India (Razorpay URL):", value=st.session_state.razorpay_link)
+        st.session_state.stripe_link = st.sidebar.text_input("Global (Stripe URL):", value=st.session_state.stripe_link)
+    
+    with st.sidebar.expander("🛠️ Edit App Subscription Prices ($)"):
+        st.session_state.fixed_prices["Silver (Monthly)"] = st.number_input("Silver Monthly:", value=st.session_state.fixed_prices["Silver (Monthly)"])
+        st.session_state.fixed_prices["Standard (6-Month)"] = st.number_input("Standard 6-Month:", value=st.session_state.fixed_prices["Standard (6-Month)"])
+        st.session_state.fixed_prices["Standard (Yearly)"] = st.number_input("Standard Yearly:", value=st.session_state.fixed_prices["Standard (Yearly)"])
+        st.session_state.fixed_prices["Premium (Yearly)"] = st.number_input("Premium Yearly:", value=st.session_state.fixed_prices["Premium (Yearly)"])
+
+    with st.sidebar.expander("🇮🇳 Edit Indian Tracker Data (Standard)"):
+        idx_ed = st.selectbox("Select Row to Edit:", [0, 1, 2])
+        st.session_state.indian_spied_data[idx_ed]["Target Winning Product"] = st.text_input("Product Name:", value=st.session_state.indian_spied_data[idx_ed]["Target Winning Product"])
+        st.session_state.indian_spied_data[idx_ed]["Estimated Daily Orders Managed"] = st.text_input("Daily Orders:", value=st.session_state.indian_spied_data[idx_ed]["Estimated Daily Orders Managed"])
+        st.session_state.indian_spied_data[idx_ed]["Calculated Product Win Rate Metric"] = st.text_input("Win Rate %:", value=st.session_state.indian_spied_data[idx_ed]["Calculated Product Win Rate Metric"])
+
+    with st.sidebar.expander("🌍 Edit Global Tracker Data (Premium)"):
+        g_node = st.selectbox("Select Global Node:", ["Global_Winner_Node_01", "Global_Winner_Node_02"])
+        st.session_state.global_spied_data[g_node]["Tracked_Product_Asset"] = st.text_input("Global Product Asset Name:", value=st.session_state.global_spied_data[g_node]["Tracked_Product_Asset"])
+        st.session_state.global_spied_data[g_node]["Daily_Gross_Sales_USD"] = st.text_input("Daily Sales ($):", value=st.session_state.global_spied_data[g_node]["Daily_Gross_Sales_USD"])
+
     st.sidebar.subheader("🎥 Review & Tutorial Video Uploader")
     add_v_url = st.sidebar.text_input("Paste YouTube Review URL:")
     if st.sidebar.button("Upload Video Review Live 🎬"):
         if add_v_url:
             st.session_state.marketing_videos.append(add_v_url)
-            st.sidebar.success("Review posted to main server dashboard successfully!")
+            st.sidebar.success("Review updated onto interface data layers!")
 
 st.sidebar.markdown(f"👤 Account: **{user_data['name']}**")
 st.sidebar.info(f"Active Allocation: **{user_data['plan']}**")
@@ -188,7 +243,7 @@ with tab1:
         with g_col1:
             st.markdown("""
             #### 🧠 1. Extract Free Gemini API Key
-            * **Step 1:** Go to the official **Google AI Studio** portal website.
+            * **Step 1:** Go to the official **Google AI Studio** portal.
             * **Step 2:** Log in using your standard Google Workspace account.
             * **Step 3:** Click on the prominent **'Get API Key'** button interface panel.
             * **Step 4:** Click 'Create API Key in New Project' and copy the long text token safe.
@@ -196,13 +251,13 @@ with tab1:
         with g_col2:
             st.markdown("""
             #### 🔑 2. Extract Permanent Meta Ads Token
-            * **Step 1:** Head directly to the official **Meta for Developers** portal dashboard.
+            * **Step 1:** Head directly to the official **Meta for Developers** portal.
             * **Step 2:** Register an app node container and choose 'Business Solutions'.
             * **Step 3:** Launch the **Graph API Explorer** tracking utility module.
             * **Step 4:** Extend permissions token for `ads_management`, `ads_read` and save permanently.
             """)
         st.markdown("---")
-        st.markdown("📥 **[PDF System Download]** Click down below to get the offline step-by-step documentation handbook resource file link.")
+        st.markdown("📥 **[PDF System Download]** Click down below to get the offline documentation handbook resource file link.")
         st.download_button(label="📥 Download Step Guide PDF Manual", data="Dummy PDF content asset data for GJ Global Setup", file_name="GJ_Global_AI_Ads_Setup_Guide.pdf")
 
     col1, col2 = st.columns(2)
@@ -224,99 +279,33 @@ with tab1:
             elif not gemini_key: st.error("❌ Key Misconfiguration Error: Missing valid Gemini decryption keys.")
             else:
                 st.session_state.last_click = current_time
-                with st.spinner("🧠 Initializing Deep Generative Core Matrix for Meta Ad Target Copy..."):
+                with st.spinner("🔒 Activating Hyper-Intelligent Meta Media Buying System Engine..."):
                     try:
                         os.environ["GOOGLE_API_VERSION"] = "v1"
                         genai.configure(api_key=sanitize_input(gemini_key))
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
-                        prompt = f"You are an elite Meta Ads media buyer. Build a full-funnel high-ROAS marketing strategy with exact keywords and behaviors (like 'Engaged Shoppers') and copy with emojis in Hinglish for product: {product_desc}"
-                        response = model.generate_content(prompt)
-                        st.success("🎯 Target Script Generation Complete!")
-                        st.info(response.text)
-                        st.balloons()
-                    except Exception as err:
-                        st.error(f"❌ Core Exception Node Rejected: {str(err)}")
+                        smart_campaign_prompt = f"""
+                        You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure. 
+                        Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product setup details.
 
-with tab2:
-    st.subheader(f"🕵️ {lang['spy']} Intelligence Board & Competitor Trackers")
-    
-    if "Silver" in user_data["plan"]:
-        st.error("🔒 ACCESS EXCEPTION DENIED: Competitor Tracking Data streams are highly classified.")
-        st.warning("⚠️ Plan Upgrade Required: Standard or Premium subscription tiers are required to unlock active product tracking engines.")
-    else:
-        if "Standard" in user_data["plan"] or "Premium" in user_data["plan"]:
-            st.markdown("### 🇮🇳 Live Tracking Streams: Indian Top Sellers Dashboard")
-            st.markdown("###### Real-time performance matrix of trending products sold by India's biggest dropshippers:")
-            st.table([
-                {"Target Winning Product": "Mini Portable Ultrasonic Washing Machine", "Observed Ad Framework Strategy": "Meta Video Engagement Run", "Estimated Daily Orders Managed": "1,450", "Calculated Product Win Rate Metric": "94%"},
-                {"Target Winning Product": "Rechargeable Automatic Hair Braider Combo", "Observed Ad Framework Strategy": "Hinglish Meta Copy Targeting GenZ", "Estimated Daily Orders Managed": "890", "Calculated Product Win Rate Metric": "89%"},
-                {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Observed Ad Framework Strategy": "Direct Store Hook + High ROAS Matrix", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
-            ])
-            
-        if "Premium" in user_data["plan"]:
-            st.write("---")
-            st.markdown("### 🌍 Worldwide Top Sellers Live Data Streams Matrix")
-            st.markdown("###### Encrypted database stream tracking global cross-border corporate dropshipping winners:")
-            st.json({
-                "Global_Winner_Node_01": {
-                    "Corporate_Store_Identifier": "LuxFinds Collective US-EU",
-                    "Tracked_Product_Asset": "Anti-Gravity Flame Air Diffuser Humidifier",
-                    "Daily_Gross_Sales_USD": "$24,800",
-                    "Observed_Ad_Channel": "Meta Canvas Interactive Feed Ads",
-                    "Verified_Targeting_Matrix": "Engaged Shoppers + Home Decor Interest",
-                    "Calculated_Win_Index": "93.5%"
-                },
-                "Global_Winner_Node_02": {
-                    "Corporate_Store_Identifier": "ZenVibe Apparel Co.",
-                    "Tracked_Product_Asset": "Orthopedic Premium Cushion Comfort Slide Sandal",
-                    "Daily_Gross_Sales_USD": "$19,150",
-                    "Observed_Ad_Channel": "Meta Carousel Dynamic Retargeting Ads",
-                    "Verified_Targeting_Matrix": "Frequent Travelers + Podiatry Health",
-                    "Calculated_Win_Index": "91.2%"
-                }
-            })
+                        PRODUCT IDENTIFIER DETAILS:
+                        - Store Link URL Context: {store_url}
+                        - Raw Product Narrative: {product_desc}
 
-with tab3:
-    st.subheader(f"🎥 {lang['videos']}")
-    st.markdown("#### User Reviews, App Promos & Admin Announcements Panel")
-    
-    if st.session_state.marketing_videos:
-        v_col1, v_col2 = st.columns(2)
-        for idx, url in enumerate(st.session_state.marketing_videos):
-            with v_col1 if idx % 2 == 0 else v_col2:
-                st.markdown(f"##### Video Module Instance #{idx+1}")
-                st.video(url)
-    else:
-        st.info("No system reviews or promotional announcement video streams have been loaded by the admin yet.")
+                        Generate the output structured across the following high-performing matrix nodes:
 
-with tab4:
-    st.subheader(f"🤖 {lang['help']}")
-    st.markdown("---")
-    st.write("### Enterprise Multilingual Intelligent AI Response Desk")
-    
-    user_query = sanitize_input(st.text_input("State your setup roadblock or technical query interface parameter below:", placeholder=lang['query_placeholder']))
-    
-    if st.button("Transmit Question Node 💬"):
-        if not user_query: st.warning("Empty question parameters cannot be routed.")
-        elif not gemini_key: st.error("❌ Key Authentication Exception: Input your Gemini Private Key string in 'Tab 1' to clear access credentials for the Help Desk Neural Network.")
-        else:
-            with st.spinner("🧠 AI Agent translating and structuring resolution steps..."):
-                try:
-                    os.environ["GOOGLE_API_VERSION"] = "v1"
-                    genai.configure(api_key=sanitize_input(gemini_key))
-                    model = genai.GenerativeModel('gemini-1.5-flash')
-                    
-                    support_prompt = f"""
-                    You are the master expert software developer and technical customer service executive engineer for 'GJ GLOBAL AI ADS PRO'.
-                    The user is utilizing an enterprise automation framework app for running Meta Ads but is stuck with some bugs, setup errors, pixel tracking failures, or strategy confusion.
-                    
-                    CRITICAL INSTRUCTION: You must diagnose their issue perfectly and write the entire response natively in this exact language locale choice parameter: {selected_lang}.
-                    
-                    User Query Data: {user_query}
-                    """
-                    response = model.generate_content(support_prompt)
-                    st.markdown("#### 💡 **AI Help Center Resolution Output:**")
-                    st.info(response.text)
-                except Exception as api_err:
-                    st.error(f"❌ Network Router Fault: Could not fetch AI response stream. {str(api_err)}")
+                        ### 🎯 1. METICULOUS TARGET AUDIENCE DEMOGRAPHICS & PSYCHOGRAPHICS
+                        - **Core Customer Persona:** Define who exactly has the wallet ready to buy this product immediately.
+                        - **Exact Interest Targeting Stacks:** Provide exact high-intent Meta interests (e.g., 'Engaged Shoppers', specific competing brand names, or matching lifestyles).
+                        - **Behavioral Filters & Demographics:** Map specific household income proxies, device usages, or buying habits that prevent budget wastage on junk clicks.
+
+                        ### 📈 2. THREE-STAGE SYSTEM CAMPAIGN FUNNEL
+                        - **TOFU (Top of Funnel - Cold Audience):** The ultimate interest-stacking setup to hook brand new shoppers who don't know the brand.
+                        - **MOFU (Middle of Funnel - Warm Audience):** Precise custom audiencing setups (Video viewers, Page engagers) to solve friction or doubts.
+                        - **BOFU (Bottom of Funnel - Hot Conversion Retargeting):** Zero-hesitation audience triggers to push immediate checkouts using dynamic urgency.
+
+                        ### ✍️ 3. HIGH-CONVERTING AD COPY VAULT (WRITTEN NATIVELY IN EMOTION-DRIVEN HINGLISH WITH HIGHLY RELEVANT EMOJIS)
+                        Create three radically different structural copy frameworks:
+                        - **Hook Copy Alpha (Problem-Agitate-Solution Angle):** Highlight a painful everyday struggle, scratch the wound, and present this product as the only divine savior.
+                        - **Hook Copy Beta (Curiosity/Viral Trend Angle):** Make it look like an insanely trending internet hack or lifestyle fl
