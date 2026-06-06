@@ -7,6 +7,36 @@ import os
 import hashlib
 import google.generativeai as genai
 
+# --- 🎯 BASE AI PROMPT TEMPLATE (Sabse upar bina kisi local indentation ke) ---
+RAW_TEMPLATE = """
+You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure.
+Your mission is to construct an absolute high-ROAS, order-pulling master funnel strategy for the following product details.
+
+PRODUCT IDENTIFIER DETAILS:
+- Store Verified Fixed Link URL Context: {}
+- Raw Narrative: {}
+
+Generate the output structured across the following high-performing matrix nodes:
+
+### 🎯 1. METICULOUS TARGET AUDIENCE DEMOGRAPHICS & PSYCHOGRAPHICS
+- Core Customer Persona: Define who exactly has the wallet ready to buy this product immediately.
+- Exact Interest Targeting Stacks: Provide exact high-intent Meta interests (e.g., 'Engaged Shoppers', specific competing brand names, or matching lifestyles).
+- Behavioral Filters & Demographics: Map specific household income proxies, device usages, or buying habits that prevent budget wastage on junk clicks.
+
+### 📈 2. THREE-STAGE SYSTEM CAMPAIGN FUNNEL
+- TOFU (Top of Funnel - Cold Audience): The ultimate interest-stacking setup to hook brand new shoppers who don't know the brand.
+- MOFU (Middle of Funnel - Warm Audience): Precise custom audiencing setups (Video viewers, Page engagers) to solve friction or doubts.
+- BOFU (Bottom of Funnel - Hot Conversion Retargeting): Zero-hesitation audience triggers to push immediate checkouts using dynamic urgency.
+
+### ✍️ 3. HIGH-CONVERTING AD COPY VAULT (WRITTEN NATIVELY IN EMOTION-DRIVEN HINGLISH WITH HIGHLY RELEVANT EMOJIS)
+Create three radically different structural copy frameworks:
+- Hook Copy Alpha (Problem-Agitate-Solution Angle): Highlight a painful everyday struggle, scratch the wound, and present this product as the only divine savior.
+- Hook Copy Beta (Curiosity/Viral Trend Angle): Make it look like an insanely trending internet hack or lifestyle flex that they are missing out on.
+- Hook Copy Gamma (Direct Benefit / No-Brainer Offer Angle): Straightforward value proposition, high value features, bold calls to action, and free shipping/COD hooks.
+
+Format the response beautifully with clean bold headings, crisp bullet points, and high conversion scannability parameters. Make sure to naturally mention the verified link {} inside conversion call-to-actions.
+"""
+
 # --- ⚙️ CONFIG (SABSE PEHLE RUN HONA ZAROORI HAI) ---
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
 
@@ -292,40 +322,4 @@ with tab1:
             * **Step 4:** Extend permissions token for `ads_management`, `ads_read` and save permanently.
             """)
         st.markdown("---")
-        st.markdown("📥 **[PDF System Download]** Click down below to get the offline documentation handbook resource file link.")
-        st.download_button(label="📥 Download Step Guide PDF Manual", data="Dummy PDF content data for GJ Global Setup", file_name="GJ_Global_AI_Ads_Setup_Guide.pdf")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.header("🛒 Creative Inventory Data")
-        raw_url = st.text_input("E-Commerce Storefront Link URL:", placeholder="https://yourstore.com")
-        store_url = validate_and_fix_url(raw_url)
-        
-        product_desc = sanitize_input(st.text_area("Product Strategy Narrative Description:"))
-        meta_token = st.text_input("Meta Graph Access Token String Container:", type="password", value="TEST_TOKEN_12345")
-        ad_account_id = st.text_input("Meta Ads Target Account ID Parameter:", value="act_123456789")
-    with col2:
-        st.header("🎯 Target Acquisition Node")
-        gemini_key = st.text_input("Sovereign Gemini Studio Secret Private Key Input:", type="password")
-        budget = st.number_input("Daily Ad Spend Allocation Vector ($/₹):", min_value=100, value=500)
-        
-        if gemini_key:
-            st.session_state.saved_gemini_key = sanitize_input(gemini_key)
-        
-        if st.button(lang['run']):
-            current_time = time.time()
-            if "last_click" in st.session_state and (current_time - st.session_state.last_click) < 5:
-                st.error("⚠️ Cyber Security Alert: anti-DDOS protection activated. Wait 5 seconds.")
-            elif not gemini_key: st.error("❌ Key Misconfiguration Error: Missing valid Gemini decryption keys.")
-            elif not store_url: st.error("❌ Link Configuration Error: Please enter a valid campaign URL link.")
-            else:
-                st.session_state.last_click = current_time
-                with st.spinner("🔒 Activating Hyper-Intelligent Meta Media Buying System Engine..."):
-                    try:
-                        os.environ["GOOGLE_API_VERSION"] = "v1"
-                        genai.configure(api_key=st.session_state.saved_gemini_key)
-                        model = genai.GenerativeModel('gemini-1.5-flash')
-                        
-                        # Fix: Raw string standard format template strictly to bypass parser issues
-                        raw_template = """
-You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in
+        st.markdown("📥 **[PDF System Download]** Click down below to get the offl
