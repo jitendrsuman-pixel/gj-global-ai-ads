@@ -401,4 +401,5 @@ with tab3:
         st.markdown("### **Growth**")
         st.markdown(f"## **$69** <small style='font-size:14px; color:gray;'>USD /month</small>", unsafe_allowed_html=True)
         st.write(f"Approx ₹{round(69 * usd_to_inr_rate)} / month")
-        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">Choo
+        # FIXED: Resolved layout split string crash mapping context safely
+        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:
