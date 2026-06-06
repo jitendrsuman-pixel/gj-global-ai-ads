@@ -7,12 +7,8 @@ import os
 import hashlib
 import google.generativeai as genai
 
-# --- ⚙️ CONFIG (CRITICAL FIX: Isko sabse pehle rakhna zaroori hai) ---
+# --- ⚙️ CONFIG (SABSE PEHLE RUN HONA ZAROORI HAI) ---
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
-
-# --- 🔒 CYBER SECURITY: DATA CRYPTO & HASHING ---
-def hash_password(password):
-    return hashlib.sha256(str.encode(password)).hexdigest()
 
 # --- 🚩 JAI SHREE RAM SPLASH SCREEN ---
 def splash_screen():
@@ -30,9 +26,19 @@ def splash_screen():
         placeholder.empty()
         st.session_state.splash_done = True
 
-# Splash screen ko config ke baad chalana hai
+# Splash screen config ke turant baad bina kisi UI interruption ke chalegi
 splash_screen()
 
+# --- 🔒 CYBER SECURITY: DATA CRYPTO & HASHING ---
+def hash_password(password):
+    return hashlib.sha256(str.encode(password)).hexdigest()
+
+def sanitize_input(text):
+    if not text: return ""
+    clean = re.sub(r'<[^>]*?>', '', str(text))
+    return clean.replace('"', '').replace("'", "").replace(";", "").strip()
+
+# --- Custom UI Styles Injection ---
 st.markdown("""
     <style>
     iframe {pointer-events: none;}
@@ -66,7 +72,7 @@ if "global_performance" not in st.session_state: st.session_state.global_perform
 if "marketing_videos" not in st.session_state: st.session_state.marketing_videos = []
 if "app_self_lock" not in st.session_state: st.session_state.app_self_lock = False
 
-# --- 🌐 MULTILINGUAL DICTIONARY ---
+# --- 🌐 MULTILINGUAL DICTIONARY & SELECTOR (Splash Screen ke Baad) ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
     "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
@@ -76,11 +82,6 @@ languages = {
 }
 selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
 lang = languages[selected_lang]
-
-def sanitize_input(text):
-    if not text: return ""
-    clean = re.sub(r'<[^>]*?>', '', str(text))
-    return clean.replace('"', '').replace("'", "").replace(";", "").strip()
 
 user_country = st.sidebar.radio("📍 Select Billing Region", ["Inside India (INR ₹)", "Outside India (International USD $)"])
 
