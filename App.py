@@ -24,24 +24,17 @@ Generate structured output:
 Naturally mention the verified link {} inside conversion call-to-actions.
 """
 
-# --- ⚙️ CONFIG ---
+# --- ⚙️ CONFIG (SABSE PEHLE RUN HONA ZAROORI HAI) ---
 st.set_page_config(page_title="GJ GLOBAL AI ADS", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
-# --- 🚩 SPLASH SCREEN ---
-if 'splash_done' not in st.session_state:
-    placeholder = st.empty()
-    placeholder.markdown("""
-        <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                    color: #ff4500; font-size: 50px; font-weight: bold; background-color: #0e1117; font-family: 'Arial'; text-shadow: 0px 0px 20px #ff4500;">
-            <p>🚩 जय श्री RAM 🚩</p>
-            <p style="font-size: 30px; color: #ffffff;">JAI SHREE RAM</p>
-        </div>
-    """, unsafe_allowed_html=True)
-    time.sleep(3)
-    placeholder.empty()
-    st.session_state.splash_done = True
-    st.rerun()
+# --- 🚩 PREMIUM HEADER DESIGN (Zero-Crash Python 3.14 Version) ---
+st.markdown("""
+    <div style="background: linear-gradient(45deg, #ff4500, #ff761a); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);">
+        <h1 style="color: white; margin: 0; font-size: 32px; font-family: 'Arial'; letter-spacing: 1px;">🚩 जय श्री RAM 🚩</h1>
+        <p style="color: #ffe6cc; margin: 5px 0 0 0; font-size: 16px; font-weight: bold; letter-spacing: 2px;">JAI SHREE RAM | GJ GLOBAL AI ADS CORE INTERFACE</p>
+    </div>
+""", unsafe_allowed_html=True)
 
 # --- 🔒 SECURITY UTILITIES ---
 def hash_password(password):
@@ -84,13 +77,13 @@ languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "query_placeholder": "Ask anything..."},
     "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन लॉन्च करें", "spy": "जासूसी टूल", "help": "AI सहायता केंद्र", "query_placeholder": "कुछ भी पूछें..."}
 }
-selected_lang = st.selectbox("🌐 Choose Language", list(languages.keys()))
+selected_lang = st.selectbox("🌐 Choose Language / भाषा चुनें", list(languages.keys()))
 lang = languages[selected_lang]
 user_country = st.sidebar.radio("📍 Billing Region", ["Inside India (INR ₹)", "Outside India (USD $)"])
 
 # --- 📝 AUTH SYSTEM ---
 if st.session_state.current_user is None:
-    st.title(f"🔐 {lang['welcome']}")
+    st.subheader(f"🔐 {lang['welcome']}")
     auth_mode = st.radio("Mode", ["Sign Up", "Log In"])
     
     if auth_mode == "Sign Up":
