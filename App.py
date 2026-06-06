@@ -282,7 +282,6 @@ with tab1:
                         st.error(f"Core Exception Node Rejected: {str(err)}")
 
 with tab2:
-    # REDESIGNED DASHBOARD INTERFACE: replica structure from image 1000111280.jpg
     st.markdown("## **Discovery Dashboard**")
     spy_mode = st.radio("Select Discovery Vector:", ["🛍️ Shops", "📦 Products", "📣 Ads"], horizontal=True)
     
@@ -290,7 +289,6 @@ with tab2:
     active_plan = "Pro Plan" if is_owner else user_data["plan"]
     st.write("---")
     
-    # 1. 7 Days Free Trial Setup (Fully Blured / Locked Layout Matrix)
     if active_plan == "7 Days Free Trial":
         st.error("🔒 ACCESS LOCKED: Copyfy Discovery parameters require an upgraded license.")
         st.warning("⚠️ Market Auto-Spy Matrix is restricted for trial accounts.")
@@ -313,25 +311,21 @@ with tab2:
         col_r3.metric("Pixels", "🔒 LOCKED", "0%")
         col_r4.metric("Origin", "🔒 LOCKED", "0%")
 
-    # 2. Starter Plan Setup (Shows basic fields layout grid, limits deep sales metrics)
     elif "Starter" in active_plan:
         st.success("🤖 Auto-Spy Engine Status: Connected (Starter Account)")
         
-        # High Converting Multi-Metric Layout Grid Matrix (Row 1)
         col_m1, col_m2, col_m3, col_m4 = st.columns(4)
         col_m1.metric("Products", "143 Items", "+12% up")
         col_m2.metric("Traffic Growth", "Moderate Run", "Steady")
         col_m3.metric("Visits", "4,210 Unique", "+8% Spike")
         col_m4.metric("Active Ads", "8 Live Ads", "Tracked")
         
-        # Row 2
         col_n1, col_n2, col_n3, col_n4 = st.columns(4)
         col_n1.metric("Shop Creation", "Dawn Custom Theme", "Active")
         col_n2.metric("Markets", "Domestic (IN)", "Verified")
         col_n3.metric("Niche", "Gadgets & Utilities", "Top Niche")
         col_n4.metric("Orders", "🔒 LOCKED (Upgrade to View)", "0%")
         
-        # Row 3 (Locked for Starter)
         col_r1, col_r2, col_r3, col_r4 = st.columns(4)
         col_r1.metric("Revenue", "🔒 LOCKED", "0%")
         col_r2.metric("Currency", "INR (₹)", "Base")
@@ -342,18 +336,15 @@ with tab2:
         st.subheader("📋 Discovery Spied Stream (Limited to Starter Tier)")
         st.table(indian_spied_data[:2])
 
-    # 3. Growth Plan Setup (Deep advanced fields tracking up to 25 stores simultaneously)
     elif "Growth" in active_plan:
         st.success("🔥 Auto-Spy Engine Status: Advanced Crawler Active (Growth Account)")
         
-        # Grid Matrix Row 1
         row1_1, row1_2, row1_3, row1_4 = st.columns(4)
         row1_1.metric("Products Tracked", "849 Items", "Traffic Growth: High")
         row1_2.metric("Visits Matrix", "24,800 Unique", "Markets: India & UAE")
         row1_3.metric("Active Ads Framework", "42 Running", "Pixels Verified")
         row1_4.metric("Daily Managed Orders", "890 Orders", "Trustpilot Rank: 4.2")
         
-        # Grid Matrix Row 2
         row2_1, row2_2, row2_3, row2_4 = st.columns(4)
         row2_1.metric("Shop Creation", "Impact Premium Theme", "Optimized")
         row2_2.metric("Revenue Index", "₹4.2 Lakhs Est", "+22% ROAS")
@@ -364,18 +355,15 @@ with tab2:
         st.subheader("🚀 High-ROAS Auto-Spied Store Analytics")
         st.table(indian_spied_data)
 
-    # 4. Pro Plan Setup (Full Unrestricted Access to Global and Indian Metric Layers)
     elif "Pro" in active_plan:
         st.success("⚡ Auto-Spy Engine Status: Max Speed Global Crawler Network Live (Pro Unrestricted Matrix)")
         
-        # Premium Multi-Metric Row 1
         r_1, r_2, r_3, r_4 = st.columns(4)
         r_1.metric("Total Spied Products", "3,412 Items", "Global Node Active")
         r_2.metric("Worldwide Store Visits", "184,500", "Currency: USD / INR / EUR")
         r_3.metric("Live Active Ads Matrix", "124 Master Ads", "Themes: Custom Headless")
         r_4.metric("Global Gross Orders Logged", "4,560 Daily Orders", "Origin: International Core")
         
-        # Premium Multi-Metric Row 2
         r2_1, r2_2, r2_3, r2_4 = st.columns(4)
         r2_1.metric("Total Revenue Tracked", "$182,400 USD", "+44% Scale Run")
         r2_2.metric("Markets Penetration", "US, EU, UAE, IN", "Global Hub")
@@ -394,7 +382,6 @@ with tab3:
     st.write("Cancel anytime • Satisfaction Guaranteed • Secure payment")
     st.write("")
     
-    # HIGH-CONVERTING LAYOUT CARD DESIGN MATRIX
     p_col1, p_col2, p_col3 = st.columns(3)
     with p_col1:
         st.markdown("### **Starter**")
@@ -406,4 +393,12 @@ with tab3:
         * ✓ 5 AI store creations (limited)
         * ✓ 50 AI chat credits / month
         * ✓ Track and analyze 10 stores simultaneously
-        * ✓ Top Shops: 25 searches / da
+        * ✓ Top Shops: 25 searches / day
+        """)
+        
+    with p_col2:
+        st.markdown("<div style='background-color:#2563eb; color:white; text-align:center; padding:3px; font-size:12px; font-weight:bold; border-radius:5px 5px 0 0;'>74% OF USERS CHOOSE THIS PLAN</div>", unsafe_allowed_html=True)
+        st.markdown("### **Growth**")
+        st.markdown(f"## **$69** <small style='font-size:14px; color:gray;'>USD /month</small>", unsafe_allowed_html=True)
+        st.write(f"Approx ₹{round(69 * usd_to_inr_rate)} / month")
+        st.markdown(f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">Choo
