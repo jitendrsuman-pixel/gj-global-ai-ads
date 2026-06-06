@@ -49,7 +49,7 @@ st.markdown("""
         border-bottom-color: #06b6d4 !important;
     }
     </style>
-    """, unsafe_allowed_html=True)
+    """, unsafe_allow_html=True) # ✅ Fixed spelling mistake here
 
 # --- ⚙️ PRODUCTION CONFIGURATION ---
 OWNER_EMAIL = "armygamingtotal@gmail.com"
@@ -170,7 +170,7 @@ with tab1:
             st.write("---")
             st.markdown("#### 📘 Key Generation Assistance")
             tutorial_pdf_url = "https://github.com/armygamingtotal/gj-global-ai-ads/raw/main/Setup_Guide.pdf"
-            st.markdown(f'<a href="{tutorial_pdf_url}" target="_blank"><button style="width:100%; padding:11px; background-color:#10b981; color:white; font-weight:bold; border-radius:6px; border:none; cursor:pointer;">📥 Download Gemini & Meta Key Setup Guide (PDF)</button></a>', unsafe_allowed_html=True)
+            st.markdown(f'<a href="{tutorial_pdf_url}" target="_blank"><button style="width:100%; padding:11px; background-color:#10b981; color:white; font-weight:bold; border-radius:6px; border:none; cursor:pointer;">📥 Download Gemini & Meta Key Setup Guide (PDF)</button></a>', unsafe_allow_html=True)
 
         if st.button("Build Targeted Ads Matrix 🚀", use_container_width=True):
             st.success("Ads Campaign Framework Sync Completed!")
@@ -253,22 +253,22 @@ with tab3:
     p_col1, p_col2, p_col3 = st.columns(3)
     with p_col1:
         st.markdown("### **Starter Indian Plan**")
-        st.markdown("## **₹4,499** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allowed_html=True)
+        st.markdown("## **₹4,499** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
         btn_starter = f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Activate Starter Tier</button></a>'
-        st.markdown(btn_starter, unsafe_allowed_html=True)
+        st.markdown(btn_starter, unsafe_allow_html=True)
         st.markdown("\n* ✓ Up to 5 Indian Store Deployments\n* ✓ Track 10 Indian Competitor Stores\n* ✓ Basic Indian Ads Research Node")
         
     with p_col2:
-        st.markdown("<div style='background-color:#2563eb; color:white; text-align:center; padding:3px; font-size:11px; font-weight:bold; border-radius:5px 5px 0 0;'>MOST POPULAR FOR LOCAL SCALING</div>", unsafe_allowed_html=True)
+        st.markdown("<div style='background-color:#2563eb; color:white; text-align:center; padding:3px; font-size:11px; font-weight:bold; border-radius:5px 5px 0 0;'>MOST POPULAR FOR LOCAL SCALING</div>", unsafe_allow_html=True)
         st.markdown("### **Growth Professional Plan**")
-        st.markdown("## **₹6,299** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allowed_html=True)
+        st.markdown("## **₹6,299** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
         btn_growth = f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">Activate Growth Tier</button></a>'
-        st.markdown(btn_growth, unsafe_allowed_html=True)
+        st.markdown(btn_growth, unsafe_allow_html=True)
         st.markdown("\n* ✓ Unlimited Indian Store Automations\n* ✓ Track 25 Scale Indian Stores\n* ✓ Core Winning Products Pipeline Feed")
         
     with p_col3:
         st.markdown("### **Pro Ultimate Enterprise**")
-        st.markdown("## **₹8,999** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allowed_html=True)
+        st.markdown("## **₹8,999** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
         btn_pro = f'<a href="{stripe_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Activate Pro Enterprise</button></a>'
-        st.markdown(btn_pro, unsafe_allowed_html=True)
+        st.markdown(btn_pro, unsafe_allow_html=True)
         st.markdown("\n* ✓ Unlocks Full **🌍 Worldwide Global Market Matrix**\n* ✓ See International Sales, Conversion Rates & Ad Views\n* ✓ Track 120+ Top Revenue Shopify Stores Global")
