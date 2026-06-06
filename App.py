@@ -28,7 +28,7 @@ Naturally mention the verified link {} inside conversion call-to-actions.
 st.set_page_config(page_title="GJ GLOBAL AI ADS", page_icon="🚩", layout="wide")
 OWNER_EMAIL = "armygamingtotal@gmail.com"
 
-# --- 🚩 PREMIUM HEADER DESIGN (Zero-HTML Safe Version) ---
+# --- 🚩 PREMIUM HEADER DESIGN ---
 st.title("🚩 जय श्री RAM 🚩")
 st.subheader("JAI SHREE RAM | GJ GLOBAL AI ADS CORE INTERFACE")
 st.divider()
@@ -50,7 +50,13 @@ def validate_and_fix_url(url):
 
 # --- 💾 APP STATE INIT ---
 if "fixed_prices" not in st.session_state:
-    st.session_state.fixed_prices = {"Silver (Monthly)": 19, "Standard (6-Month)": 49, "Standard (Yearly)": 249, "Premium (Yearly)": 499}
+    st.session_state.fixed_prices = {
+        "7 Days Free Trial": 0,
+        "Silver (Monthly)": 19, 
+        "Standard (6-Month)": 49, 
+        "Standard (Yearly)": 249, 
+        "Premium (Yearly)": 499
+    }
 if "usd_to_inr_rate" not in st.session_state: st.session_state.usd_to_inr_rate = 91.50
 if "razorpay_link" not in st.session_state: st.session_state.razorpay_link = "https://razorpay.me/@gjglobalaiads"
 if "stripe_link" not in st.session_state: st.session_state.stripe_link = "https://checkout.stripe.com/recurring-autopilot"
@@ -87,28 +93,42 @@ if st.session_state.current_user is None:
         name = sanitize_input(st.text_input("Full Name:"))
         email = sanitize_input(st.text_input("Email ID:")).lower()
         phone = sanitize_input(st.text_input("Phone Number:"))
-        custom_password = st.text_input("Password:", type="password")
+        password_input = st.text_input("Password:", type="password")
         plan_choice = st.selectbox("Plan", list(st.session_state.fixed_prices.keys()))
         
         dollar_val = st.session_state.fixed_prices[plan_choice]
-        final_price_str = f"₹{round(dollar_val * st.session_state.usd_to_inr_rate, 2)}" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
+        if plan_choice == "7 Days Free Trial":
+            final_price_str = "₹0 (Free Trial Active)" if user_country == "Inside India (INR ₹)" else "$0 USD"
+        else:
+            final_price_str = f"₹{round(dollar_val * st.session_state.usd_to_inr_rate, 2)}" if user_country == "Inside India (INR ₹)" else f"${dollar_val} USD"
         st.info(f"💳 Value: {final_price_str}")
         
         if st.button("Generate OTP ✉️"):
-            if name and email and phone and custom_password:
+            if name and email and phone and password_input:
                 st.session_state.otp_sent = str(random.randint(112233, 998877))
                 st.info(f"✨ OTP: `{st.session_state.otp_sent}`")
-            else: st.error("Please fill all details!")
+            else: 
+                st.error("Please fill all details!")
             
         if st.session_state.otp_sent:
             otp_input = st.text_input("Enter Code:")
-            if st.button("Register 🎉"):
+            if st.button("Register & Create Account 🎉"):
                 if otp_input == st.session_state.otp_sent:
-                    st.session_state.users_db[email] = {"name": name, "password": hash_password(custom_password), "plan": plan_choice, "phone": phone, "signup_date": datetime.date.today(), "days": 30}
+                    trial_days = 7 if plan_choice == "7 Days Free Trial" else 30
+                    st.session_state.users_db[email] = {
+                        "name": name, 
+                        "password": hash_password(password_input), 
+                        "plan": plan_choice, 
+                        "phone": phone, 
+                        "signup_date": datetime.date.today(), 
+                        "days": trial_days
+                    }
                     st.session_state.current_user = email
-                    st.success("Success!")
+                    st.success("Account Created Successfully!")
                     st.session_state.otp_sent = None
                     st.rerun()
+                else:
+                    st.error("Invalid OTP Code!")
     else:
         email = sanitize_input(st.text_input("Email:")).lower()
         password = st.text_input("Password:", type="password")
@@ -119,8 +139,20 @@ if st.session_state.current_user is None:
             else: st.error("Invalid credentials!")
     st.stop()
 
-# --- 🔒 SECURITY WALLS ---
+# --- 🚀 AUTOMATIC VALIDITY LOCKDOWN SYSTEM ---
 user_data = st.session_state.users_db[st.session_state.current_user]
+expiry_date = user_data['signup_date'] + datetime.timedelta(days=user_data['days'])
+
+if datetime.date.today() > expiry_date:
+    st.error("❌ SUBSCRIPTION / TRIAL EXPIRED!")
+    active_gateway = st.session_state.razorpay_link if user_country == "Inside India (INR ₹)" else st.session_state.stripe_link
+    st.markdown(f'<a href="{active_gateway}" target="_blank"><button style="background: red; color: white; padding: 15px; border: none; border-radius: 8px; width: 100%; cursor: pointer;">💳 Clear Dues Now to Continue</button></a>', unsafe_allowed_html=True)
+    if st.sidebar.button("Log Out 🔒"):
+        st.session_state.current_user = None
+        st.rerun()
+    st.stop()
+
+# --- 🔒 SECURITY WALLS ---
 st.sidebar.markdown(f"👤 Account: **{user_data['name']}** ({user_data['plan']})")
 
 if st.sidebar.button("Logout 🔒"):
