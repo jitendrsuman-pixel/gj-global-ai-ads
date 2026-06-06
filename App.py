@@ -55,8 +55,8 @@ else:
                 with st.spinner("Gemini AI आपके प्रोडक्ट के लिए बेस्ट 'Target Audience' और 'Ad Copy' बना रहा है..."):
                     try:
                         genai.configure(api_key=gemini_key)
-                        model = genai.GenerativeModel('gemini-pro')
-                        
+                        model = genai.GenerativeModel('gemini-1.5-flash') 
+
                         prompt = f"""
                         You are an expert Facebook Ads Marketer. For the product described below, give:
                         1. Top 5 Meta Target Interests (Audience Keywords)
