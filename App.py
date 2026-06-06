@@ -326,6 +326,6 @@ with tab1:
                         genai.configure(api_key=st.session_state.saved_gemini_key)
                         model = genai.GenerativeModel('gemini-1.5-flash')
                         
-                        smart_campaign_prompt = f"""
-You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in hyper-targeted E-commerce, Drop-shipping, and D2C sales infrastructure.
-Your mission is t
+                        # Fix: Raw string standard format template strictly to bypass parser issues
+                        raw_template = """
+You are a multi-million dollar elite Meta Ads media buyer and conversion psychologist specializing in
