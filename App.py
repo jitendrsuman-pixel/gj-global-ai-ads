@@ -106,11 +106,11 @@ if st.session_state.current_user is None:
         if st.button("Generate OTP ✉️"):
             if name and email and phone and password_input:
                 st.session_state.otp_sent = str(random.randint(112233, 998877))
-                st.info(f"✨ OTP: `{st.session_state.otp_sent}`")
             else: 
                 st.error("Please fill all details!")
             
         if st.session_state.otp_sent:
+            st.info(f"✨ OTP: `{st.session_state.otp_sent}`")
             otp_input = st.text_input("Enter Code:")
             if st.button("Register & Create Account 🎉"):
                 if otp_input == st.session_state.otp_sent:
@@ -137,6 +137,8 @@ if st.session_state.current_user is None:
                 st.session_state.current_user = email
                 st.rerun()
             else: st.error("Invalid credentials!")
+            
+    # Rukna tabhi hai jab user login na ho, par signup fields ko destroy nahi karna
     st.stop()
 
 # --- 🚀 AUTOMATIC VALIDITY LOCKDOWN SYSTEM ---
