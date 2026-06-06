@@ -7,6 +7,9 @@ import os
 import hashlib
 import google.generativeai as genai
 
+# --- ⚙️ CONFIG (CRITICAL FIX: Isko sabse pehle rakhna zaroori hai) ---
+st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
+
 # --- 🔒 CYBER SECURITY: DATA CRYPTO & HASHING ---
 def hash_password(password):
     return hashlib.sha256(str.encode(password)).hexdigest()
@@ -27,8 +30,7 @@ def splash_screen():
         placeholder.empty()
         st.session_state.splash_done = True
 
-# --- ⚙️ CONFIG & ULTRA PREMIUM BRAND THEME ---
-st.set_page_config(page_title="GJ GLOBAL AI ADS - Ultimate Enterprise", page_icon="🚩", layout="wide")
+# Splash screen ko config ke baad chalana hai
 splash_screen()
 
 st.markdown("""
@@ -67,7 +69,7 @@ if "app_self_lock" not in st.session_state: st.session_state.app_self_lock = Fal
 # --- 🌐 MULTILINGUAL DICTIONARY ---
 languages = {
     "English": {"welcome": "Welcome to GJ GLOBAL AI ADS", "run": "Generate Smart Campaign & Launch", "spy": "Spy Tool & Tracker", "help": "AI Help Center", "guide": "Full Setup Guide", "videos": "Reviews & Marketing Videos", "query_placeholder": "Ask anything about setup, pixel or ads..."},
-    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरीें सेटअप गाइड", "videos": "रिव्यूज और मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
+    "Hindi (हिंदी)": {"welcome": "GJ GLOBAL AI ADS में आपका स्वागत है", "run": "स्मार्ट कैंपेन जनरेट और लॉन्च करें", "spy": "जासूसी टूल और ट्रैकर", "help": "AI सहायता केंद्र", "guide": "पूरी सेटअप गाइड", "videos": "रिव्यूज and मार्केटिंग वीडियोज़", "query_placeholder": "सेटअप या पिक्सेल एरर के बारे में कुछ भी पूछें..."},
     "Spanish (Español)": {"welcome": "Bienvenido a GJ GLOBAL AI ADS", "run": "Ejecutar campaña inteligente", "spy": "Herramienta de espionaje", "help": "Centro de ayuda", "guide": "Guía de configuración", "videos": "Videos de revisión", "query_placeholder": "¿Tiene alguna duda?"},
     "French (Français)": {"welcome": "Bienvenue sur GJ GLOBAL AI ADS", "run": "Lancer la campagne IA", "spy": "Outil d'espionnage", "help": "Centre d'aide", "guide": "Guide de configuration", "videos": "Vidéos de marketing", "query_placeholder": "Posez votre question..."},
     "Arabic (العربية)": {"welcome": "مرحبًا بكم في GJ GLOBAL AI ADS", "run": "تشغيل الحملة الذكية", "spy": "أداة التجسس للمنتجات", "help": "مركز المساعدة", "guide": "دليل الإعداد الكامل", "videos": "فيديوهات المراجعة", "query_placeholder": "اطرح أي سؤال..."}
@@ -157,7 +159,7 @@ if datetime.date.today() > expiry_date:
         st.rerun()
     st.stop()
 
-# --- 👑 MASTER ADMIN SYSTEM OVERRIDE ---
+# --- 👑 OWNER ADMIN SYSTEM OVERRIDE ---
 st.sidebar.markdown("### 👑 Owner Controls")
 admin_email = st.sidebar.text_input("Verify Admin Route:", placeholder="owner@gmail.com")
 if admin_email.lower() == OWNER_EMAIL.lower():
@@ -179,7 +181,6 @@ if st.sidebar.button("Purge Session & Logout 🔒"):
 tab1, tab2, tab3, tab4 = st.tabs(["🎯 Meta Ads Automator", f"🕵️ {lang['spy']}", f"🎥 {lang['videos']}", f"🤖 {lang['help']}"])
 
 with tab1:
-    # STEP-BY-STEP EXTRACTION GUIDE FOR SILVER USERS
     st.markdown("### 📖 Step-by-Step API Extraction Manual")
     with st.expander(f"⚙️ View Full Manual: How to get Gemini API Key & Meta Ads Token?", expanded=True):
         g_col1, g_col2 = st.columns(2)
@@ -203,7 +204,6 @@ with tab1:
         st.markdown("📥 **[PDF System Download]** Click down below to get the offline step-by-step documentation handbook resource file link.")
         st.download_button(label="📥 Download Step Guide PDF Manual", data="Dummy PDF content asset data for GJ Global Setup", file_name="GJ_Global_AI_Ads_Setup_Guide.pdf")
 
-    # CORE ADS RUNNING CONSOLE
     col1, col2 = st.columns(2)
     with col1:
         st.header("🛒 Creative Inventory Data")
@@ -240,12 +240,10 @@ with tab1:
 with tab2:
     st.subheader(f"🕵️ {lang['spy']} Intelligence Board & Competitor Trackers")
     
-    # 🥈 SILVER PLAN LOCK RESTRICTION
     if "Silver" in user_data["plan"]:
         st.error("🔒 ACCESS EXCEPTION DENIED: Competitor Tracking Data streams are highly classified.")
         st.warning("⚠️ Plan Upgrade Required: Standard or Premium subscription tiers are required to unlock active product tracking engines.")
     else:
-        # 🥇 STANDARD PLAN: LIVE INDIAN SELLERS TRACKER
         if "Standard" in user_data["plan"] or "Premium" in user_data["plan"]:
             st.markdown("### 🇮🇳 Live Tracking Streams: Indian Top Sellers Dashboard")
             st.markdown("###### Real-time performance matrix of trending products sold by India's biggest dropshippers:")
@@ -255,7 +253,6 @@ with tab2:
                 {"Target Winning Product": "Crystal Hair Eraser Exfoliator Node", "Observed Ad Framework Strategy": "Direct Store Hook + High ROAS Matrix", "Estimated Daily Orders Managed": "2,120", "Calculated Product Win Rate Metric": "96%"}
             ])
             
-        # 💎 PREMIUM PLAN: GLOBAL TRACKING STREAM MATRIX
         if "Premium" in user_data["plan"]:
             st.write("---")
             st.markdown("### 🌍 Worldwide Top Sellers Live Data Streams Matrix")
@@ -283,7 +280,6 @@ with tab3:
     st.subheader(f"🎥 {lang['videos']}")
     st.markdown("#### User Reviews, App Promos & Admin Announcements Panel")
     
-    # SYSTEM RENDER FOR UPLOADED REVIEW VIDEOS BY ADMIN
     if st.session_state.marketing_videos:
         v_col1, v_col2 = st.columns(2)
         for idx, url in enumerate(st.session_state.marketing_videos):
