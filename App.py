@@ -4,7 +4,6 @@ import hashlib
 import re
 
 # --- 🎨 COPYFY AI ULTRA HIGH-CONVERTING CUSTOM UI ---
-# Streamlit rules require page config to be the absolute first executable command
 st.set_page_config(page_title="GJ GLOBAL AI ADS - Global SaaS Edition", page_icon="🚩", layout="wide")
 
 st.markdown("""
@@ -49,7 +48,7 @@ st.markdown("""
         border-bottom-color: #06b6d4 !important;
     }
     </style>
-    """, unsafe_allow_html=True) # ✅ Fixed spelling mistake here
+    """, unsafe_allow_html=True)
 
 # --- ⚙️ PRODUCTION CONFIGURATION ---
 OWNER_EMAIL = "armygamingtotal@gmail.com"
@@ -146,21 +145,29 @@ if st.sidebar.button("Log Out Securely 🔒"):
     st.rerun()
 
 if not is_platform_owner and datetime.date.today() > expiry_timeline:
-    st.error("❌ YOUR TRIAL PLAN HAS EXPIRED! Please select an Indian Business Growth Plan from the billing panel below.")
+    st.error("❌ YOUR TRIAL PLAN HAS EXPIRED! Please select a Global Scaling Plan from the billing panel below.")
     st.write(f"Complete safe payment process here: {razorpay_link}")
     st.stop()
 
 # --- 🎯 MAIN DASHBOARD INTERFACE ---
-tab1, tab2, tab3 = st.tabs(["🎯 Meta Ads Automator", "🕵️ AI Spy Discovery Dashboard", "💳 India Premium Subscription Plans"])
+tab1, tab2, tab3 = st.tabs(["🎯 Meta Ads Automator", "🕵️ AI Spy Discovery Dashboard", "💳 Global Subscription Plans"])
 
 with tab1:
-    st.markdown("### Indian Meta Ads Creative & Campaign Automator Engine")
+    st.markdown("### Indian & Global Meta Ads Creative & Campaign Automator Engine")
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("🛒 Local Shopify / WooCommerce Config")
         raw_target_url = st.text_input("Target Store URL:", placeholder="https://www.yourindianshopify.in")
         validated_url = clean_url(raw_target_url)
         product_strategy = st.text_area("Product Angle (e.g., Cash on Delivery Available, Pan India Free Shipping):")
+        
+        # --- 💰 NEW AD SPEND CONTROLLER MODULE ---
+        st.write("---")
+        st.subheader("💰 Ad Spend Budget Configuration")
+        budget_currency = st.selectbox("Select Currency Matrix:", ["INR (₹)", "USD ($)", "AED (Dh)"])
+        budget_type = st.radio("Budget Delivery Model:", ["Daily Budget", "Lifetime Campaign Budget"], horizontal=True)
+        ad_spend_amount = st.number_input(f"Enter Spend Amount ({budget_currency}):", min_value=100, value=1000, step=50)
+        
     with col2:
         st.subheader("🔑 Access Vectors")
         gemini_key = st.text_input("Enter Gemini Secret API Key:", type="password")
@@ -173,12 +180,11 @@ with tab1:
             st.markdown(f'<a href="{tutorial_pdf_url}" target="_blank"><button style="width:100%; padding:11px; background-color:#10b981; color:white; font-weight:bold; border-radius:6px; border:none; cursor:pointer;">📥 Download Gemini & Meta Key Setup Guide (PDF)</button></a>', unsafe_allow_html=True)
 
         if st.button("Build Targeted Ads Matrix 🚀", use_container_width=True):
-            st.success("Ads Campaign Framework Sync Completed!")
+            st.success(f"Campaign Architecture Synced! Target Budget: {budget_currency} {ad_spend_amount} ({budget_type}) allocated safely.")
 
 with tab2:
     st.markdown("## **Discovery Dashboard**")
     
-    # 🕒 24-HOUR AUTO-REFRESH LIVE STATUS
     today_stamp = datetime.date.today().strftime('%B %d, %Y')
     st.caption(f"🔄 **Data Sync Interval:** 24-Hour Cycle Active. Next automated live trends purge on: **{ (datetime.date.today() + datetime.timedelta(days=1)).strftime('%B %d, %Y') } 12:00 AM**")
     
@@ -188,9 +194,8 @@ with tab2:
     spy_mode = st.radio("Select Discovery Vector:", ["🛍️ Shops", "📦 Products", "📣 Ads"], horizontal=True)
     st.write("---")
     
-    # --- HANDLING LOCAL INDIAN MARKET DATA ---
     if market_source == "🇮🇳 Indian Local Market":
-        if is_platform_owner or "Pro" in current_active_plan or "Growth" in current_active_plan or "Starter" in current_active_plan:
+        if is_platform_owner or any(x in current_active_plan for x in ["Pro", "Growth", "Starter"]):
             if spy_mode == "🛍️ Shops":
                 st.markdown(f"### Live Indian Dropshipping Stores Grid (Updated: {today_stamp})")
                 c1, c2, c3 = st.columns(3)
@@ -216,7 +221,6 @@ with tab2:
             col_m2.metric("Trackable Competitor Indian Volume", "₹45,000 Max Limit", "Limited")
             st.info("💡 Upgrade to Starter, Growth, or Pro to open full Indian Dropshipping stores list.")
 
-    # --- HANDLING GLOBAL WORLDWIDE MARKET DATA (EXCLUSIVE PRO MATRIX) ---
     elif market_source == "🌍 Worldwide Global Market (Pro Only)":
         if is_platform_owner or "Pro" in current_active_plan:
             st.success(f"⚡ Data Sync State: Premium Worldwide Spy Matrix Unlocked (Updated: {today_stamp})")
@@ -232,43 +236,47 @@ with tab2:
                 st.markdown("### Global Winning Products Analytics (Duniya Ke Hot Drop-shippers Matrix)")
                 st.dataframe([
                     {"Global Viral Product": "Anti-Gravity Flame Air Humidifier", "Country Market": "United States (US)", "Global Daily Orders": "3,450 Orders", "Conversion Rate (CR %)": "4.2%", "Selling Price": "$39.99 USD"},
-                    {"Global Viral Product": "Orthopedic Premium Cushion Comfort Slides", "Country Market": "United Kingdom (UK)", "Global Daily Orders": "2,120 Orders", "Conversion Rate (CR %)": "3.8%", "Selling Price": "$29.95 USD"},
-                    {"Global Viral Product": "Cosmic Galaxy Star Projector Lamp Nightlight", "Country Market": "Germany / France (EU)", "Global Daily Orders": "1,890 Orders", "Conversion Rate (CR %)": "3.5%", "Selling Price": "$44.99 USD"}
+                    {"Global Viral Product": "Orthopedic Premium Cushion Comfort Slides", "Country Market": "United Kingdom (UK)", "Global Daily Orders": "2,120 Orders", "Conversion Rate (CR %)": "3.8%", "Selling Price": "$29.95 USD"}
                 ], use_container_width=True)
                 
             elif spy_mode == "📣 Ads":
                 st.markdown("### Worldwide Viral Ads Metrics (Views & Ad Stacks)")
-                st.info("🔥 **Global Ad Vector ID 9981:** 'Anti-Gravity Humidifier' Tiktok/Meta Video Ad. **Total Views: 12.4M Views**. Conversion Rate Index: 4.2%. Target Interest Stacks: Home Decor, Engaged Shoppers.")
-                st.info("🔥 **Global Ad Vector ID 9984:** 'Cushion Slide Sandals' Carousel Ads Run. **Total Views: 6.8M Views**. Conversion Rate Index: 3.8%. Target Interest Stacks: Travelers, Orthopedic Health.")
+                st.info("🔥 **Global Ad Vector ID 9981:** 'Anti-Gravity Humidifier' Tiktok/Meta Video Ad. **Total Views: 12.4M Views**. Conversion Rate Index: 4.2%.")
         else:
             st.error("🔒 HARD LOCK VECTOR ACCESS: Worldwide Data Stream Requires Pro Upgrade.")
-            st.warning("⚠️ Market Auto-Spy Matrix for international dropshippers (US/UK/EU orders, conversion rates, and millions of video views data) is encrypted for your tier.")
             st.info("Duniya ke dropshippers kya bech rahe hain aur kitna kama rahe hain, yeh dekhne ke liye niche se 'Pro Plan' lijiye.")
 
 with tab3:
     st.markdown("## 💳 Choose Your Access Plan")
-    st.write("Cancel anytime • Satisfaction Guaranteed • Secure payment")
+    st.write("Cancel anytime • Satisfaction Guaranteed • Secure global payments")
     st.write("")
     
     p_col1, p_col2, p_col3 = st.columns(3)
     with p_col1:
-        st.markdown("### **Starter Indian Plan**")
-        st.markdown("## **₹4,499** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
-        btn_starter = f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Activate Starter Tier</button></a>'
+        st.markdown("### **Starter SaaS Plan**")
+        
+        # --- DUAL BILLING SYSTEM FOR STARTER TIER ---
+        starter_cycle = st.radio("Choose Billing Cycle:", ["Monthly Plan", "6-Month Saver"], key="starter_cycle_choice", horizontal=True)
+        if starter_cycle == "Monthly Plan":
+            st.markdown("## **$19** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
+        else:
+            st.markdown("## **$99** <small style='font-size:14px; color:gray;'>/6 months</small> <span style='color:#10b981; font-size:12px;'>🔥 Save 13%</span>", unsafe_allow_html=True)
+            
+        btn_starter = f'<a href="{stripe_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Activate Starter Tier</button></a>'
         st.markdown(btn_starter, unsafe_allow_html=True)
-        st.markdown("\n* ✓ Up to 5 Indian Store Deployments\n* ✓ Track 10 Indian Competitor Stores\n* ✓ Basic Indian Ads Research Node")
+        st.markdown("\n* ✓ Up to 5 Store Deployments\n* ✓ Track 10 Competitor Stores\n* ✓ Basic Ads Research Node")
         
     with p_col2:
-        st.markdown("<div style='background-color:#2563eb; color:white; text-align:center; padding:3px; font-size:11px; font-weight:bold; border-radius:5px 5px 0 0;'>MOST POPULAR FOR LOCAL SCALING</div>", unsafe_allow_html=True)
-        st.markdown("### **Growth Professional Plan**")
-        st.markdown("## **₹6,299** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
-        btn_growth = f'<a href="{razorpay_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">Activate Growth Tier</button></a>'
+        st.markdown("<div style='background-color:#2563eb; color:white; text-align:center; padding:3px; font-size:11px; font-weight:bold; border-radius:5px 5px 0 0;'>RECOMMENDED FOR POWER USERS</div>", unsafe_allow_html=True)
+        st.markdown("### **Growth Scaling Plan**")
+        st.markdown("## **$249** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
+        btn_growth = f'<a href="{stripe_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#2563eb; color:white; border:none; border-radius:5px; cursor:pointer;">Activate Growth Tier</button></a>'
         st.markdown(btn_growth, unsafe_allow_html=True)
-        st.markdown("\n* ✓ Unlimited Indian Store Automations\n* ✓ Track 25 Scale Indian Stores\n* ✓ Core Winning Products Pipeline Feed")
+        st.markdown("\n* ✓ Unlimited Store Automations\n* ✓ Track 25 Scale Stores\n* ✓ Core Winning Products Pipeline Feed")
         
     with p_col3:
         st.markdown("### **Pro Ultimate Enterprise**")
-        st.markdown("## **₹8,999** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
+        st.markdown("## **$499** <small style='font-size:14px; color:gray;'>/month</small>", unsafe_allow_html=True)
         btn_pro = f'<a href="{stripe_link}" target="_blank"><button style="width:100%; padding:10px; font-weight:bold; background-color:#1e293b; color:white; border:1px solid gray; border-radius:5px; cursor:pointer;">Activate Pro Enterprise</button></a>'
         st.markdown(btn_pro, unsafe_allow_html=True)
         st.markdown("\n* ✓ Unlocks Full **🌍 Worldwide Global Market Matrix**\n* ✓ See International Sales, Conversion Rates & Ad Views\n* ✓ Track 120+ Top Revenue Shopify Stores Global")
